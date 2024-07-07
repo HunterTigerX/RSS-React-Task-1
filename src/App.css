@@ -1,5 +1,5 @@
 #loading {
-  display: none;
+  display: flex;
   margin: auto;
   border: 20px solid #EAF0F6;
   border-radius: 50%;

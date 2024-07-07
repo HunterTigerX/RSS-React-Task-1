@@ -31,21 +31,11 @@ class App extends Component<PropsWithChildren, PokemonSearchState> {
   };
 
   searchStarted = () => {
-    this.setState({ isSearching: true }, () => {
-      const element = document.getElementById('loading');
-      if (element) {
-        element.style.display = 'flex';
-      }
-    });
+    this.setState({ isSearching: true })
   };
 
   searchEnded = () => {
-    this.setState({ isSearching: true }, () => {
-      const element = document.getElementById('loading');
-      if (element) {
-        element.style.display = 'none';
-      }
-    });
+    this.setState({ isSearching: false })
   };
 
   handleSearch = async () => {
@@ -100,6 +90,7 @@ class App extends Component<PropsWithChildren, PokemonSearchState> {
   };
 
   render() {
+
     if (this.state.hasError) {
       throw new Error(this.state.errorMessage);
     }
@@ -115,7 +106,7 @@ class App extends Component<PropsWithChildren, PokemonSearchState> {
             placeholder="Enter Pokemon's color"
           />
           <button onClick={this.handleSearch}>Search</button>
-          <div id="loading"></div>
+          {this.state.isSearching && (<div id="loading"></div>)}
           <button onClick={this.throwError}>Throw Error</button>
         </div>
 

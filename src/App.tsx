@@ -1,16 +1,17 @@
 import './App.css';
+import Search from './search/search';
 
 function App() {
-
+  console.log('app')
   return (
-     <div className="container">
+    <div className="container">
       <div className="top-section">
-        {/* Content for the top section */}
         <h2>Top Section</h2>
+        <Search></Search>
       </div>
       <div className="bottom-section">
-        {/* Content for the bottom section */}
         <h2>Bottom Section</h2>
+        {/* Content for the bottom section */}
       </div>
     </div>
   );

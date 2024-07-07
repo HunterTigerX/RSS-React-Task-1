@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, PropsWithChildren } from 'react';
 import './App.css';
 interface IPokemonData {
   name: string;
@@ -14,8 +14,8 @@ interface PokemonSearchState {
   errorMessage: string,
 }
 
-class App extends Component<{}, PokemonSearchState> {
-  constructor(props: {}) {
+class App extends Component<PropsWithChildren, PokemonSearchState> {
+  constructor(props: PropsWithChildren) {
     super(props);
     this.state = {
       lastInput: localStorage.getItem('lastInput') || '',

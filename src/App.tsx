@@ -9,25 +9,21 @@ interface IPokemonData {
 interface PokemonSearchState {
   lastInput: string;
   pokemonData: IPokemonData[] | null;
-  error: string | null;
+  hasError: boolean;
   isSearching: boolean;
+  errorMessage: string,
 }
 
-class PokemonSearch extends Component<{}, PokemonSearchState> {
+class App extends Component<{}, PokemonSearchState> {
   constructor(props: {}) {
     super(props);
     this.state = {
       lastInput: localStorage.getItem('lastInput') || '',
       pokemonData: null,
-      error: null,
+      hasError: false,
       isSearching: false,
+      errorMessage: '',
     };
-  }
-
-  componentDidMount() {
-    if (localStorage.getItem('lastInput')) {
-      this.handleSearch();
-    }
   }
 
   handleInputChange = (event: { target: { value: string } }) => {
@@ -72,7 +68,7 @@ class PokemonSearch extends Component<{}, PokemonSearchState> {
             .then((response) => {
               if (!response.ok) {
                 this.searchEnded();
-                throw new Error('Pokemons with this color were not found');
+                this.setState({ errorMessage: 'Pokemons with this color were not found', hasError: true });
               }
               return response.json();
             })
@@ -82,13 +78,16 @@ class PokemonSearch extends Component<{}, PokemonSearchState> {
                 description: pokemon2.flavor_text_entries[1].flavor_text.replace('', ' '),
                 image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon2.id}.png`,
               });
+            })
+            .catch((error) => {
+                this.setState({ pokemonData: null, hasError: true, errorMessage: error });
             });
         }
-        this.setState({ pokemonData: results, error: null });
+        this.setState({ pokemonData: results, hasError: false });
         this.searchEnded();
       })
       .catch((error) => {
-        this.setState({ pokemonData: null, error: error.message });
+          this.setState({ pokemonData: null, hasError: true, errorMessage: error });
       });
   };
 
@@ -96,7 +95,15 @@ class PokemonSearch extends Component<{}, PokemonSearchState> {
     return name[0].toUpperCase() + name.slice(1);
   }
 
+  throwError = () => {
+    this.setState({ errorMessage: 'This is a manual message from button click', hasError: true });
+  };
+
   render() {
+    if (this.state.hasError) {
+      throw new Error(this.state.errorMessage);
+    }
+
     return (
       <div className="container">
         <div className="top-section">
@@ -109,11 +116,12 @@ class PokemonSearch extends Component<{}, PokemonSearchState> {
           />
           <button onClick={this.handleSearch}>Search</button>
           <div id="loading"></div>
+          <button onClick={this.throwError}>Throw Error</button>
         </div>
 
         <div className="bottom-section">
           <h2>Bottom Section. Here are your results.</h2>
-          {this.state.error && <p>{this.state.error}</p>}
+          {this.state.hasError && <p>{this.state.hasError}</p>}
           {this.state.pokemonData && (
             <div>
               {this.state.pokemonData.map((item, index) => (
@@ -134,4 +142,4 @@ class PokemonSearch extends Component<{}, PokemonSearchState> {
   }
 }
 
-export default PokemonSearch;
+export default App;

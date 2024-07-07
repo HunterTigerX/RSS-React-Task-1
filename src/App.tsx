@@ -30,21 +30,17 @@ class App extends Component<PropsWithChildren, PokemonSearchState> {
     this.setState({ lastInput: event.target.value });
   };
 
-  searchStarted = () => {
-    this.setState({ isSearching: true })
-  };
-
-  searchEnded = () => {
-    this.setState({ isSearching: false })
+  searchStateChanged = (value: boolean) => {
+    this.setState({ isSearching: value })
   };
 
   handleSearch = async () => {
     localStorage.setItem('lastInput', this.state.lastInput);
-    this.searchStarted();
+    this.searchStateChanged(true);
     await fetch(`https://pokeapi.co/api/v2/pokemon-color/${this.state.lastInput.toLowerCase()}`)
       .then((response) => {
         if (!response.ok) {
-          this.searchEnded();
+          this.searchStateChanged(false);
           throw new Error('Pokemons with this color were not found');
         }
         return response.json();
@@ -57,7 +53,7 @@ class App extends Component<PropsWithChildren, PokemonSearchState> {
           await fetch(pokemons[i].url)
             .then((response) => {
               if (!response.ok) {
-                this.searchEnded();
+                this.searchStateChanged(false);
                 this.setState({ errorMessage: 'Pokemons with this color were not found', hasError: true });
               }
               return response.json();
@@ -74,7 +70,7 @@ class App extends Component<PropsWithChildren, PokemonSearchState> {
             });
         }
         this.setState({ pokemonData: results, hasError: false });
-        this.searchEnded();
+        this.searchStateChanged(false);
       })
       .catch((error) => {
           this.setState({ pokemonData: null, hasError: true, errorMessage: error });

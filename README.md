@@ -25,4 +25,4 @@
 8.2 No libraries were used
 
 9.1 Pull Request doesn't follow guideline (including checkboxes in Score) PR example: -10 points  
-9.2 Pull Request follows guidline from https://github.com/rolling-scopes-school/docs/blob/master/docs/pull-request-review-process.md
+9.2 Pull Request follows guidline from https://docs.rs.school/#/en/pull-request-review-process?id=pull-request-description-must-contain-the-following

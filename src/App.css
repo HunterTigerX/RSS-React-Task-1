@@ -1,5 +1,17 @@
-#root {
-  display: flex;
+#loading {
+  display: none;
+  margin: auto;
+  border: 20px solid #EAF0F6;
+  border-radius: 50%;
+  border-top: 20px solid #FF7A59;
+  width: 15px;
+  height: 15px;
+  animation: spinner 4s linear infinite;
+}
+
+h2 {
+  margin: 0;
+
 }
 
 .container {
@@ -8,9 +20,31 @@
 }
 
 .top-section {
-  height: 300px;
+  /* height: 100px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
 }
 
 .bottom-section {
-  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pokePic {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  margin: auto;
+}
+
+
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

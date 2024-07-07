@@ -1,15 +1,16 @@
 import { Component } from 'react';
-
+import './App.css';
 interface IPokemonData {
-  name: string,
-  description: string,
-  image: string,
+  name: string;
+  description: string;
+  image: string;
 }
 
 interface PokemonSearchState {
   lastInput: string;
-  pokemonData: IPokemonData | null;
+  pokemonData: IPokemonData[] | null;
   error: string | null;
+  isSearching: boolean;
 }
 
 class PokemonSearch extends Component<{}, PokemonSearchState> {
@@ -19,6 +20,7 @@ class PokemonSearch extends Component<{}, PokemonSearchState> {
       lastInput: localStorage.getItem('lastInput') || '',
       pokemonData: null,
       error: null,
+      isSearching: false,
     };
   }
 
@@ -28,54 +30,102 @@ class PokemonSearch extends Component<{}, PokemonSearchState> {
     }
   }
 
-  handleInputChange = (event: { target: { value: string; }; }) => {
+  handleInputChange = (event: { target: { value: string } }) => {
     this.setState({ lastInput: event.target.value });
   };
 
-  handleSearch = () => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${this.state.lastInput.toLowerCase()}`)
+  searchStarted = () => {
+    this.setState({ isSearching: true }, () => {
+      const element = document.getElementById('loading');
+      if (element) {
+        element.style.display = 'flex';
+      }
+    });
+  };
+
+  searchEnded = () => {
+    this.setState({ isSearching: true }, () => {
+      const element = document.getElementById('loading');
+      if (element) {
+        element.style.display = 'none';
+      }
+    });
+  };
+
+  handleSearch = async () => {
+    localStorage.setItem('lastInput', this.state.lastInput);
+    this.searchStarted();
+    await fetch(`https://pokeapi.co/api/v2/pokemon-color/${this.state.lastInput.toLowerCase()}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Pokemon not found');
+          this.searchEnded();
+          throw new Error('Pokemons with this color were not found');
         }
         return response.json();
       })
-      .then((pokemon) => {
-        const pokemonInfo = {
-          name: pokemon.name,
-          description: `Pokemon number is ${pokemon.id}, and it's type is ${pokemon.types[0].type.name}`,
-          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`,
-}
-        this.setState({ pokemonData: pokemonInfo, error: null });
-        localStorage.setItem('lastInput', this.state.lastInput); // Save the new search term in local storage
+      .then(async (pokemon) => {
+        const pokemons = pokemon.pokemon_species;
+        const results: IPokemonData[] = [];
+        const maxNumber = pokemons.length < 15 ? pokemons.length : 15;
+        for (let i = 0; i < maxNumber; i += 1) {
+          await fetch(pokemons[i].url)
+            .then((response) => {
+              if (!response.ok) {
+                this.searchEnded();
+                throw new Error('Pokemons with this color were not found');
+              }
+              return response.json();
+            })
+            .then((pokemon2) => {
+              results.push({
+                name: this.makeNameCapital(pokemon2.name),
+                description: pokemon2.flavor_text_entries[1].flavor_text.replace('', ' '),
+                image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon2.id}.png`,
+              });
+            });
+        }
+        this.setState({ pokemonData: results, error: null });
+        this.searchEnded();
       })
       .catch((error) => {
         this.setState({ pokemonData: null, error: error.message });
       });
   };
 
+  makeNameCapital(name: string) {
+    return name[0].toUpperCase() + name.slice(1);
+  }
+
   render() {
     return (
       <div className="container">
         <div className="top-section">
-          <h2>Top Section</h2>
+          <h2>Top Section. Search Pokemon by it's color</h2>
           <input
             type="text"
             value={this.state.lastInput}
             onChange={this.handleInputChange}
-            placeholder="Enter Pokemon Name"
+            placeholder="Enter Pokemon's color"
           />
           <button onClick={this.handleSearch}>Search</button>
+          <div id="loading"></div>
         </div>
 
         <div className="bottom-section">
-          <h2>Bottom Section</h2>
+          <h2>Bottom Section. Here are your results.</h2>
           {this.state.error && <p>{this.state.error}</p>}
           {this.state.pokemonData && (
             <div>
-              <h2>Pokemon name is {this.state.pokemonData.name}</h2>
-              <p>{this.state.pokemonData.description}</p>
-              <img src={this.state.pokemonData.image} alt="React Image" />
+              {this.state.pokemonData.map((item, index) => (
+                <div key={`pokeKey${index}`}>
+                  <p>Pokemon name is {item.name}</p>
+                  <p>
+                    {'Pokemon picture'}
+                    <img className="pokePic" src={item.image} alt="React Image" />
+                  </p>
+                  <p>{item.description}</p>
+                </div>
+              ))}
             </div>
           )}
         </div>

@@ -28,11 +28,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       return (
         <div>
           <h2>Something went wrong.</h2>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
-            {this.state.hasError && this.state.hasError.toString()}
-            <br />
-            {this.state.errorInfo!.componentStack}
-          </details>
+          {this.state.hasError && this.state.hasError.toString()}
+          <br></br>
           <button onClick={() => this.setState({ hasError: false })}>Try again</button>
         </div>
       );

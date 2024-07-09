@@ -6,12 +6,19 @@ interface IPokemonData {
   image: string;
 }
 
+interface IPokemonSpecies {
+  name: string;
+  url: string;
+}
+
+
 interface PokemonSearchState {
   lastInput: string;
   pokemonData: IPokemonData[] | null;
   hasError: boolean;
   isSearching: boolean;
   errorMessage: string,
+  results: string,
 }
 
 class App extends Component<PropsWithChildren, PokemonSearchState> {
@@ -23,7 +30,12 @@ class App extends Component<PropsWithChildren, PokemonSearchState> {
       hasError: false,
       isSearching: false,
       errorMessage: '',
+      results: '',
     };
+  }
+
+  componentDidMount() {
+      this.handleSearch();
   }
 
   handleInputChange = (event: { target: { value: string } }) => {
@@ -34,43 +46,75 @@ class App extends Component<PropsWithChildren, PokemonSearchState> {
     this.setState({ isSearching: value })
   };
 
+  async startPage(pokemon: { results: { url: string | URL | Request; }[]; }) {
+      await fetch(pokemon.results[0].url)
+        .then((response) => {
+          if (!response.ok) {
+            this.searchStateChanged(false);
+            this.setState({ errorMessage: 'Pokemons with this color were not found', hasError: true });
+          }
+          return response.json();
+        })
+        .then((pokemon2) => {
+          this.searchPokemons(pokemon2)
+        })
+        .catch((error) => {
+            this.setState({ pokemonData: null, hasError: true, errorMessage: error });
+        });
+  }
+
+  async searchPokemons(pokemon: { pokemon_species: IPokemonSpecies[]; }) {
+    const pokemons = pokemon.pokemon_species;
+    const results: IPokemonData[] = [];
+    const maxNumber = pokemons.length < 15 ? pokemons.length : 15;
+    
+    for (let i = 0; i < maxNumber; i += 1) {
+      await fetch(pokemons[i].url)
+        .then((response) => {
+          if (!response.ok) {
+            this.searchStateChanged(false);
+            this.setState({ errorMessage: 'Pokemons with this color were not found', hasError: true });
+          }
+          return response.json();
+        })
+        .then((pokemon2) => {
+          results.push({
+            name: this.makeNameCapital(pokemon2.name),
+            description: pokemon2.flavor_text_entries[1].flavor_text.replace('', ' '),
+            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon2.id}.png`,
+          });
+        })
+        .catch((error) => {
+            this.setState({ pokemonData: null, hasError: true, errorMessage: error });
+        });
+    }
+    this.setState({ pokemonData: results, hasError: false });
+    this.searchStateChanged(false);
+  }
+
   handleSearch = async () => {
     localStorage.setItem('lastInput', this.state.lastInput);
     this.searchStateChanged(true);
-    await fetch(`https://pokeapi.co/api/v2/pokemon-color/${this.state.lastInput.toLowerCase()}`)
+    console.log('input', this.state.lastInput)
+    const link = `https://pokeapi.co/api/v2/pokemon-color/${this.state.lastInput.toLowerCase()}`;
+
+    await fetch(link)
       .then((response) => {
         if (!response.ok) {
           this.searchStateChanged(false);
-          throw new Error('Pokemons with this color were not found');
+          // throw new Error('Pokemons with this color were not found');
         }
         return response.json();
       })
       .then(async (pokemon) => {
-        const pokemons = pokemon.pokemon_species;
-        const results: IPokemonData[] = [];
-        const maxNumber = pokemons.length < 15 ? pokemons.length : 15;
-        for (let i = 0; i < maxNumber; i += 1) {
-          await fetch(pokemons[i].url)
-            .then((response) => {
-              if (!response.ok) {
-                this.searchStateChanged(false);
-                this.setState({ errorMessage: 'Pokemons with this color were not found', hasError: true });
-              }
-              return response.json();
-            })
-            .then((pokemon2) => {
-              results.push({
-                name: this.makeNameCapital(pokemon2.name),
-                description: pokemon2.flavor_text_entries[1].flavor_text.replace('', ' '),
-                image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon2.id}.png`,
-              });
-            })
-            .catch((error) => {
-                this.setState({ pokemonData: null, hasError: true, errorMessage: error });
-            });
+
+        if (pokemon.pokemon_species) {
+          this.searchPokemons(pokemon)
+        } else {
+          this.startPage(pokemon)
         }
-        this.setState({ pokemonData: results, hasError: false });
-        this.searchStateChanged(false);
+  
+
       })
       .catch((error) => {
           this.setState({ pokemonData: null, hasError: true, errorMessage: error });
@@ -82,13 +126,17 @@ class App extends Component<PropsWithChildren, PokemonSearchState> {
   }
 
   throwError = () => {
-    this.setState({ errorMessage: 'This is a manual message from button click', hasError: true });
+    // this.setState({ errorMessage: 'This is a manual message from button click', hasError: true });
   };
 
   render() {
 
     if (this.state.hasError) {
-      throw new Error(this.state.errorMessage);
+      // throw new Error(this.state.errorMessage);
+    }
+
+    if (this.state.hasError) {
+      // throw new Error(this.state.errorMessage);
     }
 
     return (

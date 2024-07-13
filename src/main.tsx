@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary.tsx';
+import App from './app/App.tsx';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
 
 import './index.css';
 

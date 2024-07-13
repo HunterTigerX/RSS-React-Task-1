@@ -12,6 +12,7 @@ module.exports = {
   plugins: ['react-refresh', 'react-compiler', 'prettier'],
   rules: {
     'react-compiler/react-compiler': 'error',
+    'react-hooks/exhaustive-deps': 'off',
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     '@typescript-eslint/no-explicit-any': 'error',
   },

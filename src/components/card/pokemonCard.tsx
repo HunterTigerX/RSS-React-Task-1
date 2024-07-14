@@ -53,8 +53,13 @@ const PokemonCard = ({ onCardChanged }: { onCardChanged: onCardChangedFunction }
 
   const pokemonCard = () => {
     loadPokemonData();
+    const currentInfo = loadLocationData();
     if (database.cardInfo.name === '') {
-      return <>{<div id="loading2"></div>}</>;
+      if (!currentInfo.pokemonId) {
+        return <>{<p>Please select a pokemon from the left</p>}</>;
+      } else {
+        return <>{<div id="loading2"></div>}</>;
+      }
     } else {
       return (
         <>

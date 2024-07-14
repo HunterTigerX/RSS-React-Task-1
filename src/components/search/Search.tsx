@@ -72,6 +72,7 @@ const Search = ({ onSearchEnd }: { onSearchEnd: OnSearchEndFunction }) => {
 
         const countPokemons2 = async (numberOfPokemons: number) => {
           const start = (currentPage - 1) * pokemonsPerPage;
+          console.log(start, numberOfPokemons)
           for (let i = start; i < start + numberOfPokemons; i += 1) {
             resultsTemp.push({
               name: pokemons[i].name,
@@ -80,11 +81,11 @@ const Search = ({ onSearchEnd }: { onSearchEnd: OnSearchEndFunction }) => {
             });
           }
         };
-
+        console.log(pokemonList, 'numberOfPokemons', numberOfPokemons)
         if (currentPage === 1) {
           await countPokemons2(firstPagePokemonsCount);
         } else if (currentPage === numberOfPages) {
-          await countPokemons2(pokemonsPerPage * numberOfPages - numberOfPokemons);
+          await countPokemons2(numberOfPokemons - (pokemonsPerPage * (numberOfPages - 1)));
         } else {
           await countPokemons2(pokemonsPerPage);
         }

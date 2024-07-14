@@ -4,14 +4,10 @@ import { IPokemonData, onPageChangedFunction } from './interfaces';
 import { Data } from '../data/Data';
 import './results.css';
 import PokemonCard from '../../components/card/pokemonCard';
+import { loadLocationData } from '../../components/methods/urlMethods';
 
 const Results = ({ onPageChanged }: { onPageChanged: onPageChangedFunction }) => {
   const [showRightPanel, setRightPanelStatus] = useState(false);
-  let [reRender, rerender] = useState(0);
-
-  const reRenderPage = () => {
-    rerender((reRender += 1));
-  };
 
   const database = Data.checkData();
   let pokemonsFound = database.foundStatus;
@@ -101,6 +97,9 @@ const Results = ({ onPageChanged }: { onPageChanged: onPageChangedFunction }) =>
     }
   };
 
+  const pageInfo = loadLocationData();
+  const searchSuccess = pageInfo.page !== 0
+
   return (
     <>
       <div className="bottom-section">
@@ -108,10 +107,10 @@ const Results = ({ onPageChanged }: { onPageChanged: onPageChangedFunction }) =>
         <p>Default color is Black</p>
         <button onClick={() => toggleRightPanel()}>{showRightPanel ? 'Hide right panel' : 'Show right panel'}</button>
         <div className="results-panels">
-          <div className={`results-left ${showRightPanel ? 'results-left-width' : ''}`}>{setResults()}</div>
-          {showRightPanel && (
+          <div className={`results-left ${searchSuccess && showRightPanel ? 'results-left-width' : ''}`}>{setResults()}</div>
+          {searchSuccess && showRightPanel && (
             <div className={`results-right ${!showRightPanel ? 'results-right-hidden' : ''}`}>
-              <PokemonCard onCardChanged={reRenderPage}></PokemonCard>
+              <PokemonCard></PokemonCard>
             </div>
           )}
         </div>

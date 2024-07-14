@@ -1,36 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loadLocationData } from '../methods/urlMethods';
 import { Data } from '../../components/data/Data';
-import { onCardChangedFunction } from './interfaces';
 import './pokemonCard.css';
 
-const PokemonCard = ({ onCardChanged }: { onCardChanged: onCardChangedFunction }) => {
+const PokemonCard = () => {
   const database = Data.checkData();
-  let [reRender, rerender] = useState(0);
-
-  const reRenderPage = () => {
-    rerender((reRender += 1));
-  };
-
-  const doCardChanged = (oldCard: string, newCard: string) => {
-    if (oldCard !== newCard) {
-      reRenderPage();
-      onCardChanged();
-    }
-  };
+  const [searching, setSearchingState] = useState(false);
+  const [lastLocation, setLastLocation] = useState<string>();
 
   const makeNameCapital = (name: string) => {
     return name[0].toUpperCase() + name.slice(1);
   };
 
   const loadPokemonData = async () => {
-    if (loadLocationData().pokemonId) {
-      const pokemonUrl = `https://pokeapi.co/api/v2/pokemon-species/${loadLocationData().pokemonId}/`;
+    const pokemonUrl = `https://pokeapi.co/api/v2/pokemon-species/${loadLocationData().pokemonId}/`;
 
+    if (loadLocationData().pokemonId && lastLocation !== pokemonUrl) {
+      setSearchingState(true);
+
+      setLastLocation(pokemonUrl);
       await fetch(pokemonUrl)
         .then((response) => {
           if (!response.ok) {
             console.log('error');
+            setSearchingState(false);
           }
           return response.json();
         })
@@ -40,26 +33,26 @@ const PokemonCard = ({ onCardChanged }: { onCardChanged: onCardChangedFunction }
             description: singlePokemonData.flavor_text_entries[1].flavor_text.replace('', ' '),
             image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${singlePokemonData.id}.png`,
           };
-          const oldCard = JSON.stringify(database.cardInfo);
           database.updateCard(pokemonDataTemp);
-          const newCard = JSON.stringify(database.cardInfo);
-          doCardChanged(oldCard, newCard);
+          setSearchingState(false);
         })
         .catch(() => {
           console.log('error');
+          setSearchingState(false);
         });
     }
   };
 
-  const pokemonCard = () => {
+  useEffect(() => {
     loadPokemonData();
-    const currentInfo = loadLocationData();
+  }, [loadPokemonData]);
+
+  const pokemonCard = () => {
+    if (searching) {
+      return <>{<div id="loading2"></div>}</>;
+    }
     if (database.cardInfo.name === '') {
-      if (!currentInfo.pokemonId) {
-        return <>{<p>Please select a pokemon from the left</p>}</>;
-      } else {
-        return <>{<div id="loading2"></div>}</>;
-      }
+      return <>{<p>Please select a pokemon from the left</p>}</>;
     } else {
       return (
         <>

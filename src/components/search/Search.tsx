@@ -27,11 +27,29 @@ const Search = ({ onSearchEnd }: { onSearchEnd: OnSearchEndFunction }) => {
   };
 
   const handleSearch = async (inputClicked?: boolean) => {
-    database.updateLastInput(input);
-    setSearchingState(true);
+    let currentLocation: ICurrentUrlData = loadLocationData();
+    let newInput: string = input;
+    const urlColor = currentLocation.color;
 
-    const currentLocation: ICurrentUrlData = loadLocationData();
-    let colorOrId = '1';
+    if (!inputClicked && urlColor !== null && urlColor !== input) {
+      database.lastInput = urlColor;
+      updateLocation(`?id=${database.lastInput}&page=${currentLocation.page}`);
+      newInput = urlColor;
+      setinput(urlColor);
+    } else if (inputClicked) {
+      database.lastInput = input;
+      newInput = input;
+      if (input === '') {
+        database.lastInput = '1';
+        newInput = '1';
+      }
+
+      updateLocation(`?id=${newInput}&page=${currentLocation.page}`);
+      setinput(newInput);
+    }
+
+    database.updateLastInput(newInput);
+    setSearchingState(true);
 
     if (inputClicked) {
       currentLocation.page = 1;
@@ -39,21 +57,13 @@ const Search = ({ onSearchEnd }: { onSearchEnd: OnSearchEndFunction }) => {
 
     setCurrentPage(currentLocation.page);
 
-    if (input !== '') {
-      colorOrId = input;
-    } else if (!inputClicked && currentLocation.color) {
-      colorOrId = currentLocation.color;
-    }
-
-    const currentPage = Number(currentLocation.page);
-    const newSearchlink = `${searchUrl}/${colorOrId.toLowerCase()}`;
-    const newLocation = `?id=${colorOrId.toLowerCase()}&page=${currentPage}`;
-    updateLocation(newLocation);
+    const newSearchlink = `${searchUrl}/${String(database.lastInput).toLowerCase()}`;
 
     await fetch(newSearchlink)
       .then((response) => {
         if (!response.ok) {
-          updateResults('Pokemons with this color were not found', false, 1);
+          updateLocation(`?id=${urlColor}&page=${0}`);
+          updateResults('Pokemons with this color were not found', false, 0);
         }
         return response.json();
       })
@@ -64,6 +74,9 @@ const Search = ({ onSearchEnd }: { onSearchEnd: OnSearchEndFunction }) => {
         const numberOfPages = Math.ceil(numberOfPokemons / pokemonsPerPage);
         const firstPagePokemonsCount = numberOfPokemons < pokemonsPerPage ? numberOfPokemons : pokemonsPerPage;
         const resultsTemp: { name: string; location: string; id: string }[] = [];
+        const currentPage = Number(currentLocation.page) ? Number(currentLocation.page) : 1;
+        const newLocation = `?id=${database.lastInput.toLowerCase()}&page=${currentPage}`;
+        updateLocation(newLocation);
 
         if (currentPage > numberOfPages || currentPage < 0) {
           updateResults('There are no such page with pokemons', false, 1);
@@ -101,23 +114,13 @@ const Search = ({ onSearchEnd }: { onSearchEnd: OnSearchEndFunction }) => {
     window.history.pushState({ path: updatedUrl }, '', updatedUrl);
   };
 
-  const getCurrentPage = () => {
-    const currentUrl = window.location.href;
-    const splittedUrl = currentUrl.split('?');
-    if (splittedUrl.length > 1) {
-      const splittedArgs = splittedUrl[1].split('&');
-      return Number(splittedArgs[1].replace('page=', ''));
-    } else {
-      return 1;
-    }
-  };
-
-  const checkIfLocationChanged = () => {
-    if (getCurrentPage() !== currentPageSaved) {
+  const checkIfPageChanged = () => {
+    const locationData = loadLocationData();
+    if (locationData.page !== currentPageSaved) {
       handleSearch();
     }
   };
-  checkIfLocationChanged();
+  checkIfPageChanged();
 
   return (
     <div className="top-section">

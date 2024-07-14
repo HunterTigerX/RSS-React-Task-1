@@ -40,6 +40,15 @@ h2 {
   margin: auto;
 }
 
+ul {
+  list-style-type: none;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(0deg);

@@ -1,5 +1,5 @@
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
-import { Main, NotFound } from '../../pages';
+import { Main, NotFound, ErrorPage } from '../../pages';
 
 const routes: RouteObject[] = [
   {
@@ -7,6 +7,12 @@ const routes: RouteObject[] = [
       {
         path: '/',
         element: <Main />,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            path: 'contacts/:contactId',
+          },
+        ],
       },
       {
         path: '*',

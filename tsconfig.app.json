@@ -23,7 +23,7 @@
       "@components/*": ["components/*"],
       "@pages": ["pages"]
     },
-    "types": ["node", "jest", "react-dom"],
+    "types": ["node", "jest", "react-dom", "@testing-library/jest-dom", "@testing-library/react"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
@@ -35,6 +35,9 @@
         }
       }
     ],
+
+    /* Testing */
+    "allowSyntheticDefaultImports": true,
 
     /* Linting */
     "strict": true,

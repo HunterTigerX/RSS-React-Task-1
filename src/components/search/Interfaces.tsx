@@ -10,3 +10,8 @@ export interface IPokemonSpecies {
 }
 
 export type OnSearchEndFunction = () => void;
+
+export interface ICurrentUrlData {
+  color: string | null;
+  page: number;
+}

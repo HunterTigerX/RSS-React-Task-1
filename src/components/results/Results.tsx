@@ -19,21 +19,23 @@ const Results = ({ onPageChanged }: { onPageChanged: onPageChangedFunction }) =>
 
   const fillPagination = () => {
     const maxPages = database.pages;
-    const pagesLiArray = [];
-    for (let i = 1; i <= maxPages; i += 1) {
-      pagesLiArray.push(
-        <li key={`liNavBar${i}`}>
-          <button key={`liButton${i}`} onClick={() => updateLocation(i, false)}>
-            {i}
-          </button>
-        </li>
+    if (database.data !== `Pokemons with this color were not found`) {
+      const pagesLiArray = [];
+      for (let i = 1; i <= maxPages; i += 1) {
+        pagesLiArray.push(
+          <li key={`liNavBar${i}`}>
+            <button key={`liButton${i}`} onClick={() => updateLocation(i, false)}>
+              {i}
+            </button>
+          </li>
+        );
+      }
+      return (
+        <nav>
+          <ul className="ulPagination">{pagesLiArray}</ul>
+        </nav>
       );
     }
-    return (
-      <nav>
-        <ul className="ulPagination">{pagesLiArray}</ul>
-      </nav>
-    );
   };
 
   const toggleRightPanel = (status?: boolean) => {

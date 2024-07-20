@@ -1,5 +1,7 @@
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
-import { Main, NotFound, ErrorPage } from '../../pages';
+import { NotFound, ErrorPage, Main } from '@pages';
+import PokemonCard from '@components/card/PokemonCard';
+import Results from '@components/results/Results';
 
 const routes: RouteObject[] = [
   {
@@ -10,7 +12,14 @@ const routes: RouteObject[] = [
         errorElement: <ErrorPage />,
         children: [
           {
-            path: 'contacts/:contactId',
+            path: 'page/:pageId',
+            element: <Results />,
+            children: [
+              {
+                path: 'pokemon/:pokemonId',
+                element: <PokemonCard />,
+              },
+            ],
           },
         ],
       },

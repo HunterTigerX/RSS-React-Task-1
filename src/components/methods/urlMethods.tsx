@@ -23,3 +23,8 @@ export const getQueryParams = () => {
   const onlyPath = currentUrl.replace(hostName, '');
   return onlyPath.slice(1, onlyPath.length);
 };
+
+export const loadPokemonId = () => {
+  const pokemonId = location.pathname.split('/')[4];
+  return pokemonId
+};

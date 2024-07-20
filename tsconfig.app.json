@@ -21,7 +21,10 @@
     "paths": {
       "@app/*": ["app/*"],
       "@components/*": ["components/*"],
-      "@pages": ["pages"]
+      "@pages": ["pages"],
+      "@router": ["router"],
+      "@methods": ["methods"],
+      "@data/*": ["data/*"],
     },
     "types": ["node", "jest", "react-dom", "@testing-library/jest-dom", "@testing-library/react"],
     "esModuleInterop": true,

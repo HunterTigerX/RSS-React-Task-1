@@ -1,81 +1,45 @@
-import { useEffect, useState } from 'react';
-import { loadLocationData } from '../methods/urlMethods';
-import { Data } from '../../components/data/Data';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleRightPanel } from 'reducers/actions/actions';
+import { AppDispatch } from 'reducers/root/rootReduces';
+
 import './pokemonCard.css';
+import { IState } from 'reducers/reducers/Interfaces';
 
 const PokemonCard = () => {
-  const database = Data.checkData();
-  const [searching, setSearchingState] = useState(false);
-  const [lastLocation, setLastLocation] = useState<string>();
+  const pokemonName = useSelector((state: IState) => state.searchSide.pokemonName);
+  const pokemonImage = useSelector((state: IState) => state.searchSide.pokemonImage);
+  const pokemonDescription = useSelector((state: IState) => state.searchSide.pokemonDescription);
+  const loadingRight = useSelector((state: IState) => state.searchSide.loadingRight);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const makeNameCapital = (name: string) => {
-    return name[0].toUpperCase() + name.slice(1);
-  };
-
-  const loadPokemonData = async () => {
-    const pokemonUrl = `https://pokeapi.co/api/v2/pokemon-species/${loadLocationData().pokemonId}/`;
-
-    if (loadLocationData().pokemonId && lastLocation !== pokemonUrl) {
-      setSearchingState(true);
-
-      setLastLocation(pokemonUrl);
-      await fetch(pokemonUrl)
-        .then((response) => {
-          if (!response.ok) {
-            console.log('error');
-            setSearchingState(false);
-          }
-          return response.json();
-        })
-        .then((singlePokemonData) => {
-          const pokemonDataTemp = {
-            name: makeNameCapital(singlePokemonData.name),
-            description: singlePokemonData.flavor_text_entries[1].flavor_text.replace('', ' '),
-            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${singlePokemonData.id}.png`,
-          };
-          database.updateCard(pokemonDataTemp);
-          setSearchingState(false);
-        })
-        .catch(() => {
-          console.log('error');
-          setSearchingState(false);
-        });
+    if (name.length > 0) {
+      return name[0].toUpperCase() + name.slice(1);
     }
   };
 
-  useEffect(() => {
-    loadPokemonData();
-  }, [loadPokemonData]);
-
-  const pokemonCard = () => {
-    if (searching) {
-      return <>{<div id="loading2"></div>}</>;
-    }
-    if (database.cardInfo.name === '') {
-      return <>{<p>Please select a pokemon from the left</p>}</>;
-    } else {
-      return (
-        <>
-          {
-            <div>
-              {
-                <div>
-                  <p>Pokemon name is {database.cardInfo.name}</p>
-                  <p>
-                    {'Pokemon picture'}
-                    <img className="pokePic" src={database.cardInfo.image} alt="React Image" />
-                  </p>
-                  <p>{database.cardInfo.description}</p>
-                </div>
-              }
-            </div>
-          }
-        </>
-      );
-    }
+  const closeRightScreen = () => {
+    dispatch(toggleRightPanel());
   };
 
-  return <div>{pokemonCard()}</div>;
+  const setResults = () => {
+    return (
+      <>
+        <button onClick={closeRightScreen}>X</button>
+        {loadingRight && <div id="loading2"></div>}
+        {!loadingRight && (
+          <div>
+            <div>Pokemon name is {makeNameCapital(pokemonName)}</div>
+            <div>{pokemonDescription}</div>
+            <img className="pokePic" src={pokemonImage} alt="React Image" />
+          </div>
+        )}
+      </>
+    );
+  };
+
+  return <>{setResults()}</>;
 };
 
 export default PokemonCard;

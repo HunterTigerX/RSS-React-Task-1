@@ -1,16 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleRightPanel } from 'reducers/actions/actions';
 import { AppDispatch } from 'reducers/root/rootReduces';
+import { IState } from 'reducers/reducers/Interfaces';
+import { useContext } from 'react';
+import { ThemeContext } from '../themes/themeContect';
 
 import './pokemonCard.css';
-import { IState } from 'reducers/reducers/Interfaces';
 
 const PokemonCard = () => {
   const pokemonName = useSelector((state: IState) => state.searchSide.pokemonName);
   const pokemonImage = useSelector((state: IState) => state.searchSide.pokemonImage);
   const pokemonDescription = useSelector((state: IState) => state.searchSide.pokemonDescription);
   const loadingRight = useSelector((state: IState) => state.searchSide.loadingRight);
-
+  const { theme, toggleOverlay } = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
 
   const makeNameCapital = (name: string) => {
@@ -20,22 +22,25 @@ const PokemonCard = () => {
   };
 
   const closeRightScreen = () => {
+    toggleOverlay();
     dispatch(toggleRightPanel());
   };
 
   const setResults = () => {
     return (
-      <>
-        <button onClick={closeRightScreen}>X</button>
-        {loadingRight && <div id="loading2"></div>}
+      <div>
+        <button className={`button_${theme}`} onClick={closeRightScreen}>
+          X
+        </button>
+        {loadingRight && <div id="loadingRightSlide"></div>}
         {!loadingRight && (
           <div>
             <div>Pokemon name is {makeNameCapital(pokemonName)}</div>
             <div>{pokemonDescription}</div>
-            <img className="pokePic" src={pokemonImage} alt="React Image" />
+            <img className={`pokePic`} src={pokemonImage} alt="React Image" />
           </div>
         )}
-      </>
+      </div>
     );
   };
 

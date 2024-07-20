@@ -1,7 +1,7 @@
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { NotFound, ErrorPage, Main } from '@pages';
-import PokemonCard from '@components/card/PokemonCard';
-import Results from '@components/results/Results';
+import PokemonCard from 'components/card/PokemonCard';
+import Results from 'components/results/Results';
 
 const routes: RouteObject[] = [
   {

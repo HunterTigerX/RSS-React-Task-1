@@ -1,4 +1,4 @@
-import { IPokemonData } from '@components/results/interfaces';
+import { IPokemonData } from 'components/results/interfaces';
 import { PokemonSpecies } from 'reducers/actions/Interfaces';
 
 export interface ISideAction {

@@ -10,7 +10,7 @@ function returnErrorMessage(err: IErrorMessage): string {
 
 export const changePage = (newPage: number) => {
   return async (dispatch: (arg0: { type: string; payload?: number }) => void) => {
-    dispatch({ type: 'TOGGLE_RIGHT_PANEL'});
+    dispatch({ type: 'TOGGLE_RIGHT_PANEL' });
     dispatch({
       type: 'CHANGE_PAGE',
       payload: newPage,
@@ -20,7 +20,7 @@ export const changePage = (newPage: number) => {
 
 export const searchMain = (input: string, pokemonsPerPage: number) => {
   return async (dispatch: (arg0: { type: string; payload?: ISearchData | string }) => void) => {
-    dispatch({ type: 'TOGGLE_RIGHT_PANEL'});
+    dispatch({ type: 'TOGGLE_RIGHT_PANEL' });
     dispatch({ type: 'FETCH_DATA_START' });
     try {
       const response: ISearchPayload = await axios.get(`${searchPokemonByColor}/${input}`);
@@ -31,7 +31,6 @@ export const searchMain = (input: string, pokemonsPerPage: number) => {
     } catch (error: unknown) {
       const errorMessage = returnErrorMessage(error as IErrorMessage);
       dispatch({ type: 'FETCH_DATA_FAILURE', payload: errorMessage });
-      
     }
   };
 };
@@ -43,7 +42,7 @@ export const savePokemonsList = () => {
 };
 
 export const searchSide = (pokemonId: string) => {
-  return async (dispatch: (arg0: { type: string; payload?: IPokemonCard | string; }) => void) => {
+  return async (dispatch: (arg0: { type: string; payload?: IPokemonCard | string }) => void) => {
     dispatch({ type: 'FETCH_POKEMON_DATA_START' });
     try {
       const response: IPokemonCardData = await axios.get(`${searchPokemonById}${pokemonId}`);
@@ -57,7 +56,7 @@ export const searchSide = (pokemonId: string) => {
 };
 
 export const toggleRightPanel = (state?: boolean) => {
-  return async (dispatch: (arg0: { type: string; payload: boolean | undefined; }) => void) => {
+  return async (dispatch: (arg0: { type: string; payload: boolean | undefined }) => void) => {
     dispatch({ type: 'TOGGLE_RIGHT_PANEL', payload: state });
   };
 };

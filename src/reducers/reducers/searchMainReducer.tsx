@@ -1,5 +1,5 @@
-import { ISearchData } from "reducers/actions/Interfaces";
-import { ISearchMainResults, IStateMain } from "./Interfaces";
+import { ISearchData } from 'reducers/actions/Interfaces';
+import { ISearchMainResults, IStateMain } from './Interfaces';
 
 const initialState: IStateMain = {
   pokemonData: null,
@@ -27,8 +27,6 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
       return { ...state, isLoading: true, error: null };
 
     case 'FETCH_MAIN_DATA_SUCCESS': {
-
-
       return {
         ...state,
         isLoading: false,

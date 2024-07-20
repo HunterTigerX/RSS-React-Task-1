@@ -1,4 +1,4 @@
-import { IPokemonCard } from "reducers/actions/Interfaces";
+import { IPokemonCard } from 'reducers/actions/Interfaces';
 
 const initialState = {
   loadingRight: false,

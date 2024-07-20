@@ -9,7 +9,7 @@ const Search = () => {
   const dispatch = useDispatch<AppDispatch>();
   const loadingMain = useSelector((state: IState) => state.searchMain.isLoading);
   const pokemonsPerPage = 20;
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   const [input, setinput] = useState<string>('');
 
   useEffect(() => {

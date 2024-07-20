@@ -26,5 +26,5 @@ export const getQueryParams = () => {
 
 export const loadPokemonId = () => {
   const pokemonId = location.pathname.split('/')[4];
-  return pokemonId
+  return pokemonId;
 };

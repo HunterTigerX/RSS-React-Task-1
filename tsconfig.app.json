@@ -24,7 +24,7 @@
       "@pages": ["pages"],
       "@router": ["router"],
       "@methods": ["methods"],
-      "@data/*": ["data/*"],
+      "@data/*": ["data/*"]
     },
     "types": ["node", "jest", "react-dom", "@testing-library/jest-dom", "@testing-library/react"],
     "esModuleInterop": true,

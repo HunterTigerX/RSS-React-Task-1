@@ -28,3 +28,9 @@ export const loadPokemonId = () => {
   const pokemonId = location.pathname.split('/')[4];
   return pokemonId;
 };
+
+export const makeNameCapital = (name: string) => {
+  if (name.length > 0) {
+    return name[0].toUpperCase() + name.slice(1);
+  }
+};

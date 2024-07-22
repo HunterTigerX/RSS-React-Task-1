@@ -4,6 +4,7 @@ import { AppDispatch } from 'reducers/root/rootReduces';
 import { IState } from 'reducers/reducers/Interfaces';
 import { useContext } from 'react';
 import { ThemeContext } from '../themes/themeContect';
+import { makeNameCapital } from '@components/methods/urlMethods';
 
 import './pokemonCard.css';
 
@@ -14,12 +15,6 @@ const PokemonCard = () => {
   const loadingRight = useSelector((state: IState) => state.searchSide.loadingRight);
   const { theme, toggleOverlay } = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
-
-  const makeNameCapital = (name: string) => {
-    if (name.length > 0) {
-      return name[0].toUpperCase() + name.slice(1);
-    }
-  };
 
   const closeRightScreen = () => {
     toggleOverlay();

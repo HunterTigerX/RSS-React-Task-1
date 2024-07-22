@@ -1,0 +1,9 @@
+.cart {
+  gap: 10px;
+}
+
+.cart-element-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}

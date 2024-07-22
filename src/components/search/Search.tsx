@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { savePokemonsList, searchMain } from 'reducers/actions/actions';
+import { goToPageOne, savePokemonsList, searchMain } from 'reducers/actions/actions';
 import { AppDispatch } from 'reducers/root/rootReduces';
 import { IState } from 'reducers/reducers/Interfaces';
 import { useNavigate } from 'react-router';
@@ -10,14 +10,20 @@ import { ThemeContext } from '../themes/themeContect';
 const Search = () => {
   const dispatch = useDispatch<AppDispatch>();
   const loadingMain = useSelector((state: IState) => state.searchMain.isLoading);
+  const savedInput = useSelector((state: IState) => state.searchMain.input);
+  const currentPage = useSelector((state: IState) => state.searchMain.currentPage);
   const pokemonsPerPage = 20;
   let navigate = useNavigate();
-  const [input, setinput] = useState<string>('');
+  const [input, setinput] = useState<string>(savedInput ? savedInput : '');
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
-    navigate('/page/1');
-    dispatch(searchMain(input === '' ? '1' : input, pokemonsPerPage));
+    if (currentPage) {
+      navigate(`/page/${currentPage}?${input}`);
+    } else {
+      navigate('/page/1?black');
+    }
+    dispatch(searchMain(input, pokemonsPerPage));
     dispatch(savePokemonsList());
   }, []);
 
@@ -26,8 +32,9 @@ const Search = () => {
       <button
         className={`button_${theme}`}
         onClick={() => {
-          navigate('/page/1');
-          dispatch(searchMain(input === '' ? '1' : input, pokemonsPerPage));
+          dispatch(goToPageOne());
+          navigate(`/page/1?${input}`);
+          dispatch(searchMain(input, pokemonsPerPage));
         }}
       >
         Search

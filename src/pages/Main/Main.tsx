@@ -3,6 +3,8 @@ import { useContext } from 'react';
 import Search from 'components/search/Search';
 import ErrorButton from 'components/ErrorButton/ErrorButton';
 import Pagination from 'components/Pagination/Pagination';
+import Cart from '@components/cart/cart';
+
 import { ThemeSwitcher } from 'components/themes/themeSwitcher';
 import { ThemeContext } from 'components/themes/themeContect';
 
@@ -20,6 +22,7 @@ const Main = () => {
         <ErrorButton errorEnable={''}></ErrorButton>
         <Outlet />
         <Pagination></Pagination>
+        <Cart></Cart>
       </div>
     </div>
   );

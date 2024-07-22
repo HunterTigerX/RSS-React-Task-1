@@ -17,6 +17,7 @@ const initialState: IStateMain = {
   currentPokemonId: 0,
   showRightPanel: false,
   hasError: false,
+  savedCartIds: [],
 };
 
 const pokemonsPerPage = 20;
@@ -32,7 +33,6 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
         isLoading: false,
         data: action.payload,
         totalPokemons: action.payload.pokemon_species.length,
-        currentPage: 1,
         maxPages: Math.ceil(action.payload.pokemon_species.length / pokemonsPerPage),
         colorId: action.payload.id,
         pokemonsList: action.payload.pokemon_species,
@@ -54,6 +54,12 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
         colorId: null,
         pokemonsList: null,
         input: action.payload.input,
+      };
+
+    case 'CHANGE_PAGE_ONE':
+      return {
+        ...state,
+        currentPage: 1,
       };
 
     case 'CHANGE_PAGE': {
@@ -78,11 +84,14 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
 
       const returnPokemonsList = (numberOfPokemons: number) => {
         const start = (state.currentPage - 1) * pokemonsPerPage;
-        if (state.pokemonsList.length > 0) {
+        const isArray = Array.isArray(state.pokemonsList);
+        if (isArray && state.pokemonsList.length > 0) {
           for (let i = start; i < start + numberOfPokemons; i += 1) {
+            const pokemonId = getPokemonId(state.pokemonsList[i].url);
             resultList.push({
               name: state.pokemonsList[i].name,
-              id: getPokemonId(state.pokemonsList[i].url),
+              id: pokemonId,
+              checkBox: state.savedCartIds.includes(pokemonId) ? true : false,
             });
           }
         }
@@ -101,8 +110,23 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
       };
     }
 
-    case 'TOGGLE_RIGHT_PANEL':
+    case 'TOGGLE_RIGHT_PANEL': {
       return { ...state, showRightPanel: action.payload ? true : false };
+    }
+
+    case 'UPDATE_CHECKBOXES': {
+      const pokemonId = action.payload.pokemonId;
+      const foundCheckBox = state.savedCartIds.indexOf(pokemonId);
+      let mergedArray;
+      if (foundCheckBox > -1) {
+        const deepCopy = JSON.stringify(state.savedCartIds);
+        mergedArray = JSON.parse(deepCopy);
+        mergedArray.splice(foundCheckBox, 1);
+      } else {
+        mergedArray = state.savedCartIds.concat([pokemonId]);
+      }
+      return { ...state, savedCartIds: mergedArray };
+    }
 
     default:
       return state;

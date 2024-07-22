@@ -23,7 +23,8 @@ export const searchMain = (input: string, pokemonsPerPage: number) => {
     dispatch({ type: 'TOGGLE_RIGHT_PANEL' });
     dispatch({ type: 'FETCH_DATA_START' });
     try {
-      const response: ISearchPayload = await axios.get(`${searchPokemonByColor}/${input}`);
+      const searchParam = input === '' ? '1' : input;
+      const response: ISearchPayload = await axios.get(`${searchPokemonByColor}/${searchParam}`);
       response.data.input = input;
       response.data.pokemonsPerPage = pokemonsPerPage;
       dispatch({ type: 'FETCH_MAIN_DATA_SUCCESS', payload: response.data });
@@ -64,5 +65,11 @@ export const toggleRightPanel = (state?: boolean) => {
 export const setLoadingRight = () => {
   return {
     type: 'SET_LOADING_RIGHT',
+  };
+};
+
+export const goToPageOne = () => {
+  return {
+    type: 'CHANGE_PAGE_ONE',
   };
 };

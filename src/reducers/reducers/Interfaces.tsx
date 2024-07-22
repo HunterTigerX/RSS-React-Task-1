@@ -8,6 +8,15 @@ export interface ISideAction {
 export interface IState {
   searchSide: IStateSide;
   searchMain: IStateMain;
+  cart: IStateCart;
+}
+
+export interface IStateCart {
+  savedCartData: ICartData;
+}
+
+export interface ICartData {
+  [id: string]: string;
 }
 
 export interface IStateSide {
@@ -34,9 +43,17 @@ export interface IStateMain {
   currentPokemonId: number;
   showRightPanel: boolean;
   hasError: boolean;
+  savedCartIds: string[];
 }
 
 export interface ISearchMainResults {
   name: string;
   id: string;
+  checkBox: boolean;
+}
+
+export interface ICartPayload {
+  pokemonId: string;
+  pokemonName: string;
+  action: boolean;
 }

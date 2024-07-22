@@ -21,6 +21,7 @@ export interface ISearchData {
   input: string;
   pokemonsPerPage: number;
   totalPokemons: number;
+  pokemonId: string;
 }
 
 export interface ISearchPayload {

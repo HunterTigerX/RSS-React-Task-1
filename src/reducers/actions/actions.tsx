@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { ISearchData, IErrorMessage, IPokemonCard, IPokemonCardData, ISearchPayload } from './Interfaces';
+import { ISearchData, IErrorMessage, IPokemonCard, IPokemonCardData } from './Interfaces';
 
-const searchPokemonByColor = `https://pokeapi.co/api/v2/pokemon-color/`;
 const searchPokemonById = `https://pokeapi.co/api/v2/pokemon-species/`;
 
 function returnErrorMessage(err: IErrorMessage): string {
@@ -18,21 +17,15 @@ export const changePage = (newPage: number) => {
   };
 };
 
-export const searchMain = (input: string, pokemonsPerPage: number) => {
+export const searchMain = (data: ISearchData) => {
   return async (dispatch: (arg0: { type: string; payload?: ISearchData | string }) => void) => {
-    dispatch({ type: 'TOGGLE_RIGHT_PANEL' });
-    dispatch({ type: 'FETCH_DATA_START' });
-    try {
-      const searchParam = input === '' ? '1' : input;
-      const response: ISearchPayload = await axios.get(`${searchPokemonByColor}/${searchParam}`);
-      response.data.input = input;
-      response.data.pokemonsPerPage = pokemonsPerPage;
-      dispatch({ type: 'FETCH_MAIN_DATA_SUCCESS', payload: response.data });
-      dispatch({ type: 'SAVE_CURRENT_POKEMONS' });
-    } catch (error: unknown) {
-      const errorMessage = returnErrorMessage(error as IErrorMessage);
-      dispatch({ type: 'FETCH_DATA_FAILURE', payload: errorMessage });
-    }
+    dispatch({ type: 'FETCH_MAIN_DATA_SUCCESS', payload: data });
+    dispatch({ type: 'SAVE_CURRENT_POKEMONS' });
+  };
+};
+export const searchFailed = (error: string) => {
+  return async (dispatch: (arg0: { type: string; payload?: ISearchData | string }) => void) => {
+    dispatch({ type: 'FETCH_DATA_FAILURE', payload: error });
   };
 };
 
@@ -59,6 +52,16 @@ export const searchSide = (pokemonId: string) => {
 export const toggleRightPanel = (state?: boolean) => {
   return async (dispatch: (arg0: { type: string; payload: boolean | undefined }) => void) => {
     dispatch({ type: 'TOGGLE_RIGHT_PANEL', payload: state });
+  };
+};
+export const updateInput = (input: string) => {
+  return async (dispatch: (arg0: { type: string; payload: string }) => void) => {
+    dispatch({ type: 'UPDATE_INPUT', payload: input });
+  };
+};
+export const saveInput = (input: string) => {
+  return async (dispatch: (arg0: { type: string; payload: string }) => void) => {
+    dispatch({ type: 'SAVE_INPUT', payload: input });
   };
 };
 

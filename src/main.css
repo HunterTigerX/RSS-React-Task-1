@@ -15,21 +15,21 @@ body {
 }
 
 .dark * button {
-  background-color: white !important;
-  color: black !important;
+  background-color: white;
+  color: black;
 }
 
 .dark > button {
-  background-color: white !important;
-  color: black !important;
+  background-color: white;
+  color: black;
 }
 
 .light * button {
-  background-color: rgb(0, 0, 0) !important;
-  color: rgb(255, 255, 255) !important;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
 }
 
 .light > button {
-  background-color: rgb(0, 0, 0) !important;
-  color: rgb(255, 255, 255) !important;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
 }

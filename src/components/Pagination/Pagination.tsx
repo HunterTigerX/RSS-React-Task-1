@@ -9,7 +9,7 @@ import './pagination.css';
 const Pagination = () => {
   const dispatch = useDispatch<AppDispatch>();
   const maxPages = useSelector((state: IState) => state.searchMain.maxPages);
-  const input = useSelector((state: IState) => state.searchMain.input);
+  const savedInput = useSelector((state: IState) => state.searchMain.savedInput);
   const pokemonsOnPage = useSelector((state: IState) => state.searchMain.pokemonsOnPage);
   const currentPage = useSelector((state: IState) => state.searchMain.currentPage);
 
@@ -19,7 +19,7 @@ const Pagination = () => {
       pagesLiArray.push(
         <li key={`liNavBar${i}`}>
           <Link
-            to={`page/${i}?${input}`}
+            to={`page/${i}?${savedInput}`}
             key={`pageLinkKey${i + 1}`}
             onClick={() => {
               dispatch(changePage(i));

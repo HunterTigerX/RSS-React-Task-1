@@ -22,7 +22,7 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@babel/types": "^7.24.7",
-    "@reduxjs/toolkit": "^2.2.6",
+    "@reduxjs/toolkit": "https://pkg.csb.dev/reduxjs/redux-toolkit/commit/06a30ee4/@reduxjs/toolkit",
     "@testing-library/jest-dom": "^5.17.0",
     "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.3",

@@ -18,9 +18,6 @@ export interface ISearchData {
   name: string;
   names: Name[];
   pokemon_species: PokemonSpecies[];
-  input: string;
-  pokemonsPerPage: number;
-  totalPokemons: number;
   pokemonId: string;
 }
 

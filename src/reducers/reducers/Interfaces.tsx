@@ -39,12 +39,13 @@ export interface IStateMain {
   colorId: number;
   pokemonsList: PokemonSpecies[];
   pokemonsOnPage: IPokemonData[];
-  input: string;
+  savedInput: string;
   pokemonsPerPage: number;
   currentPokemonId: number;
   showRightPanel: boolean;
   hasError: boolean;
   savedCartIds: string[];
+  currentInput: string;
 }
 
 export interface ISearchMainResults {

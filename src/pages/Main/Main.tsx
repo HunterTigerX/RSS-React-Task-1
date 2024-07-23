@@ -4,7 +4,7 @@ import Search from 'components/search/Search';
 import ErrorButton from 'components/ErrorButton/ErrorButton';
 import Pagination from 'components/Pagination/Pagination';
 import Cart from '@components/cart/cart';
-
+import FlyoutCart from '@components/Flyout/FlyoutCart';
 import { ThemeSwitcher } from 'components/themes/themeSwitcher';
 import { ThemeContext } from 'components/themes/themeContect';
 
@@ -24,6 +24,7 @@ const Main = () => {
         <Pagination></Pagination>
         <Cart></Cart>
       </div>
+      <FlyoutCart></FlyoutCart>
     </div>
   );
 };

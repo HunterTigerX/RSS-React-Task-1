@@ -13,6 +13,7 @@ export interface IState {
 
 export interface IStateCart {
   savedCartData: ICartData;
+  somethingInCart: boolean;
 }
 
 export interface ICartData {

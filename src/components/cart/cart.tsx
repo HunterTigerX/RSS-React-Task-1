@@ -9,6 +9,8 @@ import './cart.css';
 
 const Cart = () => {
   const savedToCart = useSelector((state: IState) => state.cart.savedCartData);
+  const somethingInCart = useSelector((state: IState) => state.cart.somethingInCart);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
@@ -38,10 +40,13 @@ const Cart = () => {
 
   return (
     <>
-      <div className="cart">
-        <h2>Here is your cart</h2>
-        {setResults()}
-      </div>
+      {' '}
+      {somethingInCart && (
+        <div className="cart">
+          <h2>Here is your cart</h2>
+          {setResults()}
+        </div>
+      )}
     </>
   );
 };

@@ -119,6 +119,10 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
       return { ...state, showRightPanel: action.payload ? true : false };
     }
 
+    case 'CLOSE_RIGHT_PANEL': {
+      return { ...state, showRightPanel: false };
+    }
+
     case 'UPDATE_CHECKBOXES': {
       const pokemonId = action.payload.pokemonId;
       const foundCheckBox = state.savedCartIds.indexOf(pokemonId);

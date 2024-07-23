@@ -1,14 +1,20 @@
-import { ChangeEvent, useContext } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { savePokemonsList, searchSide, setLoadingRight, toggleRightPanel } from 'reducers/actions/actions';
+import {
+  savePokemonsList,
+  searchFailed,
+  searchSide,
+  setLoadingRight,
+  toggleRightPanel,
+} from 'reducers/actions/actions';
 import { AppDispatch } from 'reducers/root/rootReduces';
 import { IState } from 'reducers/reducers/Interfaces';
 import { ThemeContext } from 'components/themes/themeContect';
 import { IPokemonData } from './interfaces';
-
-import './results.css';
 import { toggleCart } from 'reducers/actions/cartActions';
+import { useGetPokemonByIdQuery } from 'reducers/root/pokemonApi';
+import './results.css';
 
 const Results = () => {
   const pokemonsOnPage = useSelector((state: IState) => state.searchMain.pokemonsOnPage);
@@ -16,6 +22,11 @@ const Results = () => {
   const showRightPanel = useSelector((state: IState) => state.searchMain.showRightPanel);
   const { theme, toggleOverlay } = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
+
+  const [pokemonId, setPokemonId] = useState<string>('');
+  const { data, error } = useGetPokemonByIdQuery(pokemonId, {
+    skip: !pokemonId || pokemonId == '',
+  });
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>, index: number) => {
     const isChecked = event.target.checked;
@@ -25,15 +36,27 @@ const Results = () => {
     dispatch(savePokemonsList());
   };
 
-  const linkClicked = () => {
-    toggleOverlay();
-    dispatch(setLoadingRight());
-    dispatch(toggleRightPanel(true));
+  useEffect(() => {
+    if (data) {
+      dispatch(searchSide(data));
+    }
 
-    setTimeout(() => {
-      const pokemonId = window.location.href.split('/')[6];
-      dispatch(searchSide(pokemonId));
-    }, 500);
+    if (error) {
+      const deepCopy = JSON.stringify(error);
+      const errorMessage: string = JSON.parse(deepCopy);
+      dispatch(searchFailed(errorMessage));
+    }
+  }, [data, error, dispatch]);
+
+  const linkClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const targetUrl = event.currentTarget.getAttribute('href');
+    if (targetUrl) {
+      const pokemonIdFromUrl = targetUrl.split('/')[4];
+      toggleOverlay();
+      dispatch(setLoadingRight());
+      dispatch(toggleRightPanel(true));
+      setPokemonId(pokemonIdFromUrl);
+    }
   };
 
   const setResults = () => {

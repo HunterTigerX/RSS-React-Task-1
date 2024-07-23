@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ISearchData } from 'reducers/actions/Interfaces';
+import { IPokemonCard, ISearchData } from 'reducers/actions/Interfaces';
 
 export const pokemonApi = createApi({
   reducerPath: 'pokemonApi',
@@ -8,7 +8,7 @@ export const pokemonApi = createApi({
     getPokemonByColor: builder.query<ISearchData, string>({
       query: (color) => `/pokemon-color/${color.toLowerCase()}`,
     }),
-    getPokemonById: builder.query<ISearchData, string>({
+    getPokemonById: builder.query<IPokemonCard, string>({
       query: (id) => `/pokemon-species/${id.toLowerCase()}`,
     }),
   }),

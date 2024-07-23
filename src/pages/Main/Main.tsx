@@ -14,6 +14,7 @@ import './Main.css';
 const Main = () => {
   const { theme, overflow, toggleOverlay } = useContext(ThemeContext);
   const totalPokemons = useSelector((state: IState) => state.searchMain.totalPokemons);
+
   return (
     <div className={`container ${theme}`}>
       {overflow && <div className={`shadow shadow-${theme}`} onClick={toggleOverlay}></div>}

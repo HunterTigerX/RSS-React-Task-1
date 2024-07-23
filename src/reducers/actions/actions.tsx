@@ -1,11 +1,4 @@
-import axios from 'axios';
-import { ISearchData, IErrorMessage, IPokemonCard, IPokemonCardData } from './Interfaces';
-
-const searchPokemonById = `https://pokeapi.co/api/v2/pokemon-species/`;
-
-function returnErrorMessage(err: IErrorMessage): string {
-  return err.message;
-}
+import { ISearchData, IPokemonCard } from './Interfaces';
 
 export const changePage = (newPage: number) => {
   return async (dispatch: (arg0: { type: string; payload?: number }) => void) => {
@@ -19,6 +12,7 @@ export const changePage = (newPage: number) => {
 
 export const searchMain = (data: ISearchData) => {
   return async (dispatch: (arg0: { type: string; payload?: ISearchData | string }) => void) => {
+    dispatch({ type: 'CLOSE_RIGHT_PANEL' });
     dispatch({ type: 'FETCH_MAIN_DATA_SUCCESS', payload: data });
     dispatch({ type: 'SAVE_CURRENT_POKEMONS' });
   };
@@ -35,17 +29,9 @@ export const savePokemonsList = () => {
   };
 };
 
-export const searchSide = (pokemonId: string) => {
+export const searchSide = (pokemonData: IPokemonCard) => {
   return async (dispatch: (arg0: { type: string; payload?: IPokemonCard | string }) => void) => {
-    dispatch({ type: 'FETCH_POKEMON_DATA_START' });
-    try {
-      const response: IPokemonCardData = await axios.get(`${searchPokemonById}${pokemonId}`);
-      response.data.pokemonId = pokemonId;
-      dispatch({ type: 'FETCH_POKEMON_DATA_SUCCESS', payload: response.data });
-    } catch (error: unknown) {
-      const errorMessage = returnErrorMessage(error as IErrorMessage);
-      dispatch({ type: 'FETCH_POKEMON_DATA_FAILURE', payload: errorMessage });
-    }
+    dispatch({ type: 'FETCH_POKEMON_DATA_SUCCESS', payload: pokemonData });
   };
 };
 

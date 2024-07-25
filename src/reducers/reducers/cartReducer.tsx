@@ -37,7 +37,7 @@ const cartReducer = (state = initialState, action: { type: string; payload: ICar
       const savedCartDataCopy = JSON.parse(deepCopy);
       const newValue = `${pokemonName}&&${pokemonId}&&${description}&&${url}`;
       if (action.payload.id in savedCartDataCopy) {
-        savedCartDataCopy[action.payload.id] = newValue
+        savedCartDataCopy[action.payload.id] = newValue;
       }
 
       return { ...state, savedCartData: savedCartDataCopy };

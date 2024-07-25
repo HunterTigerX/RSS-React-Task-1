@@ -84,7 +84,7 @@ const Results = () => {
         dispatch(updateCart(data));
       }
     }
-  }, [pokemonData])
+  }, [pokemonData]);
 
   const linkClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
     const targetUrl = event.currentTarget.getAttribute('href');

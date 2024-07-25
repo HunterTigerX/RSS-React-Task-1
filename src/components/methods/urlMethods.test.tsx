@@ -1,4 +1,12 @@
-import { download, downloadAll, getPokemonId, jsonToCsv, makeNameCapital, returnOnlyName, setResults } from './urlMethods';
+import {
+  download,
+  downloadAll,
+  getPokemonId,
+  jsonToCsv,
+  makeNameCapital,
+  returnOnlyName,
+  setResults,
+} from './urlMethods';
 import { describe, it, expect, vi } from 'vitest';
 
 const mockedCart = {
@@ -60,9 +68,9 @@ describe('Location Data Functions', () => {
     const savedToCart = {
       name: 'bulbasaur',
     };
-  
+
     const handleButtonClick = vi.fn();
-    
+
     const result = setResults(savedToCart, handleButtonClick);
     expect(result).toHaveLength(Object.keys(savedToCart).length);
 
@@ -78,6 +86,4 @@ describe('Location Data Functions', () => {
       expect(div.type).toBe('div');
     });
   });
-
-
 });

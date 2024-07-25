@@ -1,1 +1,0 @@
-export { loadLocationData } from './urlMethods';

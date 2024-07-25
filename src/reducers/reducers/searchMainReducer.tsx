@@ -1,5 +1,5 @@
-import { ISearchData } from 'reducers/actions/Interfaces';
-import { ISearchMainResults, IStateMain } from './Interfaces';
+import { IStateMain, ISearchData, ISearchMainResults } from '@components/interfaces/interfaces';
+import { getPokemonId } from '@components/methods/urlMethods';
 
 const initialState: IStateMain = {
   pokemonData: null,
@@ -31,20 +31,14 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
     }
 
     case 'FETCH_MAIN_DATA_SUCCESS': {
-      if (action.payload) {
-        return {
-          ...state,
-          data: action.payload,
-          totalPokemons: action.payload.pokemon_species.length,
-          maxPages: Math.ceil(action.payload.pokemon_species.length / state.pokemonsPerPage),
-          colorId: action.payload.id,
-          pokemonsList: action.payload.pokemon_species,
-        };
-      } else {
-        return {
-          ...state,
-        };
-      }
+      return {
+        ...state,
+        data: action.payload,
+        totalPokemons: action.payload.pokemon_species.length,
+        maxPages: Math.ceil(action.payload.pokemon_species.length / state.pokemonsPerPage),
+        colorId: action.payload.id,
+        pokemonsList: action.payload.pokemon_species,
+      };
     }
 
     case 'FETCH_DATA_FAILURE': {
@@ -77,12 +71,6 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
       const firstPagePokemonsCount =
         state.totalPokemons < state.pokemonsPerPage ? state.totalPokemons : state.pokemonsPerPage;
       const resultList: ISearchMainResults[] = [];
-
-      const getPokemonId = (url: string) => {
-        const filter = url.replace('https://pokeapi.co/api/v2/pokemon-species/', '');
-        const filtered = filter.slice(0, filter.length - 1);
-        return filtered;
-      };
 
       const returnPokemonsList = (numberOfPokemons: number) => {
         const start = (state.currentPage - 1) * state.pokemonsPerPage;

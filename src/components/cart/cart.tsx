@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'reducers/root/rootReduces';
 import { MouseEventHandler } from 'react';
-import { makeNameCapital } from '@components/methods/urlMethods';
+import { makeNameCapital, returnOnlyName } from '@components/methods/urlMethods';
 import { savePokemonsList } from 'reducers/actions/actions';
 import { toggleCart } from 'reducers/actions/cartActions';
-import { IState } from 'reducers/reducers/Interfaces';
-import './cart.css';
+import { IState } from '@components/interfaces/interfaces';
+import './Cart.css';
 
 const Cart = () => {
   const savedToCart = useSelector((state: IState) => state.cart.savedCartData);
@@ -25,16 +25,16 @@ const Cart = () => {
   const setResults = () => {
     const results = [];
     for (const [key, value] of Object.entries(savedToCart)) {
+      const capitalizedName = makeNameCapital(value) || '';
       results.push(
-        <div key={`cart${key}`} className="cart-element-wrapper">
+        <div key={`cart${key}${value}`} className="cart-element-wrapper">
           <button className="remove-from-cart" data-value={`stored-${key}`} onClick={handleButtonClick}>
             Remove
           </button>
-          <div>{makeNameCapital(value)}</div>
+          <div>{returnOnlyName(capitalizedName)}</div>
         </div>
       );
     }
-
     return results;
   };
 

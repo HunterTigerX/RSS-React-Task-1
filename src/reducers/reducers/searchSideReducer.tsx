@@ -1,4 +1,4 @@
-import { IPokemonCard } from 'reducers/actions/Interfaces';
+import { IPokemonCard } from '@components/interfaces/interfaces';
 
 const initialState = {
   loadingRight: false,
@@ -21,12 +21,6 @@ const searchSideReducer = (state = initialState, action: { type: string; payload
         pokemonName: action.payload.name,
       };
     }
-    case 'FETCH_POKEMON_DATA_FAILURE':
-      return {
-        ...state,
-        loadingRight: false,
-        error: action.payload,
-      };
     case 'SET_LOADING_RIGHT': {
       return {
         ...state,

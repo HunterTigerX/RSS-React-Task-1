@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   goToPageOne,
@@ -9,11 +9,10 @@ import {
   updateInput,
 } from 'reducers/actions/actions';
 import { AppDispatch } from 'reducers/root/rootReduces';
-import { IState } from 'reducers/reducers/Interfaces';
 import { useNavigate } from 'react-router';
-import { useContext } from 'react';
 import { ThemeContext } from '../themes/themeContect';
 import { useGetPokemonByColorQuery } from 'reducers/root/pokemonApi';
+import { IState } from '@components/interfaces/interfaces';
 import './search.css';
 
 const Search = () => {

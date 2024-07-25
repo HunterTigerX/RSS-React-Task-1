@@ -1,14 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import { useContext } from 'react';
-import Search from 'components/search/Search';
+import Search from '@components/search/Search';
 import ErrorButton from 'components/ErrorButton/ErrorButton';
-import Pagination from 'components/Pagination/Pagination';
-import Cart from '@components/cart/cart';
-import FlyoutCart from '@components/Flyout/FlyoutCart';
+import Pagination from '@components/pagination/Pagination';
+import Cart from '@components/cart/Cart';
+import FlyoutCart from '@components/flyout/FlyoutCart';
 import { ThemeSwitcher } from 'components/themes/themeSwitcher';
 import { ThemeContext } from 'components/themes/themeContect';
 import { useSelector } from 'react-redux';
-import { IState } from 'reducers/reducers/Interfaces';
+import { IState } from '@components/interfaces/interfaces';
 import './Main.css';
 
 const Main = () => {

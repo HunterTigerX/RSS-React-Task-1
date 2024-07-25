@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleRightPanel } from 'reducers/actions/actions';
 import { AppDispatch } from 'reducers/root/rootReduces';
-import { IState } from 'reducers/reducers/Interfaces';
+import { IState } from '@components/interfaces/interfaces';
 import { useContext } from 'react';
-import { ThemeContext } from '../themes/themeContect';
+import { ThemeContext } from 'components/themes/themeContect';
 import { makeNameCapital } from '@components/methods/urlMethods';
-
 import './pokemonCard.css';
 
 const PokemonCard = () => {

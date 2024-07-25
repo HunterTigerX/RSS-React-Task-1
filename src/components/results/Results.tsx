@@ -9,12 +9,16 @@ import {
   toggleRightPanel,
 } from 'reducers/actions/actions';
 import { AppDispatch } from 'reducers/root/rootReduces';
-import { IState } from 'reducers/reducers/Interfaces';
 import { ThemeContext } from 'components/themes/themeContect';
-import { IPokemonData } from './interfaces';
-import { toggleCart } from 'reducers/actions/cartActions';
+import { toggleCart, updateCart } from 'reducers/actions/cartActions';
 import { useGetPokemonByIdQuery } from 'reducers/root/pokemonApi';
+import { IState, IPokemonData } from '@components/interfaces/interfaces';
 import './results.css';
+
+interface ICheckboxData {
+  checked: boolean;
+  pokemonId: string | null;
+}
 
 const Results = () => {
   const pokemonsOnPage = useSelector((state: IState) => state.searchMain.pokemonsOnPage);
@@ -23,6 +27,7 @@ const Results = () => {
   const { theme, toggleOverlay } = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
 
+  const [pokemonData, setPokemonData] = useState<ICheckboxData>({ checked: false, pokemonId: null });
   const [pokemonId, setPokemonId] = useState<string>('');
   const { data, error } = useGetPokemonByIdQuery(pokemonId, {
     skip: !pokemonId || pokemonId == '',
@@ -33,12 +38,24 @@ const Results = () => {
     const selectedPokemonId = pokemonsOnPage[index].id;
     const selectedPokemonName = pokemonsOnPage[index].name;
     dispatch(toggleCart(selectedPokemonId, isChecked, selectedPokemonName));
+    setPokemonId(selectedPokemonId);
     dispatch(savePokemonsList());
+    setPokemonData({
+      checked: isChecked,
+      pokemonId: selectedPokemonId,
+    });
   };
 
   useEffect(() => {
     if (data) {
       dispatch(searchSide(data));
+      if (pokemonData.checked) {
+        dispatch(updateCart(data));
+        setPokemonData({
+          checked: false,
+          pokemonId: null,
+        });
+      }
     }
 
     if (error) {
@@ -46,7 +63,7 @@ const Results = () => {
       const errorMessage: string = JSON.parse(deepCopy);
       dispatch(searchFailed(errorMessage));
     }
-  }, [data, error, dispatch]);
+  }, [data, pokemonData, error, dispatch]);
 
   const linkClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
     const targetUrl = event.currentTarget.getAttribute('href');

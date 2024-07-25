@@ -148,6 +148,7 @@ export interface ICartPayload {
   action: boolean;
   flavor_text_entries: FlavorTextEntry[];
   id: number;
+  name: string;
 }
 
 interface ILanguage {

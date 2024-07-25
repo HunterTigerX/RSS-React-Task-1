@@ -29,6 +29,7 @@ const Results = () => {
 
   const [pokemonData, setPokemonData] = useState<ICheckboxData>({ checked: false, pokemonId: null });
   const [pokemonId, setPokemonId] = useState<string>('');
+  const [samePokemonClicked, setSamePokemonClicked] = useState<boolean>(false);
   const { data, error } = useGetPokemonByIdQuery(pokemonId, {
     skip: !pokemonId || pokemonId == '',
   });
@@ -57,18 +58,41 @@ const Results = () => {
         });
       }
     }
-
     if (error) {
       const deepCopy = JSON.stringify(error);
       const errorMessage: string = JSON.parse(deepCopy);
       dispatch(searchFailed(errorMessage));
     }
-  }, [data, pokemonData, error, dispatch]);
+  }, [data, error, dispatch]);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(searchSide(data));
+      if (pokemonData.checked) {
+        dispatch(updateCart(data));
+        setPokemonData({
+          checked: false,
+          pokemonId: null,
+        });
+      }
+    }
+  }, [samePokemonClicked]);
+
+  useEffect(() => {
+    if (data) {
+      if (String(data.id) === pokemonId) {
+        dispatch(updateCart(data));
+      }
+    }
+  }, [pokemonData])
 
   const linkClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
     const targetUrl = event.currentTarget.getAttribute('href');
     if (targetUrl) {
       const pokemonIdFromUrl = targetUrl.split('/')[4];
+      if (pokemonIdFromUrl === pokemonId) {
+        setSamePokemonClicked(!samePokemonClicked);
+      }
       toggleOverlay();
       dispatch(setLoadingRight());
       dispatch(toggleRightPanel(true));

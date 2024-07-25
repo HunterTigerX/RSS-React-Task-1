@@ -1,4 +1,4 @@
-import { download, downloadAll, getPokemonId, jsonToCsv, makeNameCapital, returnOnlyName } from './urlMethods';
+import { download, downloadAll, getPokemonId, jsonToCsv, makeNameCapital, returnOnlyName, setResults } from './urlMethods';
 import { describe, it, expect, vi } from 'vitest';
 
 const mockedCart = {
@@ -55,4 +55,29 @@ describe('Location Data Functions', () => {
     const result = returnOnlyName(mockValue);
     expect(result).toBe(expectedResult);
   });
+
+  it('should return an array of elements with correct structure', () => {
+    const savedToCart = {
+      name: 'bulbasaur',
+    };
+  
+    const handleButtonClick = vi.fn();
+    
+    const result = setResults(savedToCart, handleButtonClick);
+    expect(result).toHaveLength(Object.keys(savedToCart).length);
+
+    result.forEach((element) => {
+      expect(element.type).toBe('div');
+      expect(element.props.className).toBe('cart-element-wrapper');
+      const button = element.props.children[0];
+      expect(button.type).toBe('button');
+      expect(button.props.className).toBe('remove-from-cart');
+      expect(button.props['data-value']).toBe(`stored-name`);
+      expect(button.props.onClick).toBe(handleButtonClick);
+      const div = element.props.children[1];
+      expect(div.type).toBe('div');
+    });
+  });
+
+
 });

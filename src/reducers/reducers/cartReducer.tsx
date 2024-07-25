@@ -19,7 +19,6 @@ const cartReducer = (state = initialState, action: { type: string; payload: ICar
       const wasAdded = action.payload.action;
       const deepCopy = JSON.stringify(state.savedCartData);
       const savedCartDataCopy = JSON.parse(deepCopy);
-
       if (wasAdded) {
         savedCartDataCopy[pokemonId] = pokemonName;
       } else {
@@ -30,11 +29,17 @@ const cartReducer = (state = initialState, action: { type: string; payload: ICar
     }
 
     case 'UPDATE_CART': {
-      const description = action.payload.flavor_text_entries[1].flavor_text.replace('', ' ');
+      const pokemonId = action.payload.id;
+      const pokemonName = action.payload.name;
+      const description = action.payload.flavor_text_entries[0].flavor_text.replace('', ' ');
       const url = `https://pokeapi.co/api/v2/pokemon-species/${action.payload.id}/`;
       const deepCopy = JSON.stringify(state.savedCartData);
       const savedCartDataCopy = JSON.parse(deepCopy);
-      savedCartDataCopy[action.payload.id] = `${savedCartDataCopy[action.payload.id]}&&${description}&&${url}`;
+      const newValue = `${pokemonName}&&${pokemonId}&&${description}&&${url}`;
+      if (action.payload.id in savedCartDataCopy) {
+        savedCartDataCopy[action.payload.id] = newValue
+      }
+
       return { ...state, savedCartData: savedCartDataCopy };
     }
 

@@ -5,7 +5,7 @@ import { IState } from '@components/interfaces/interfaces';
 import { useContext } from 'react';
 import { ThemeContext } from 'components/themes/themeContect';
 import { makeNameCapital } from '@components/methods/urlMethods';
-import './pokemonCard.css';
+import './PokemonCard.css';
 
 const PokemonCard = () => {
   const pokemonName = useSelector((state: IState) => state.searchSide.pokemonName);

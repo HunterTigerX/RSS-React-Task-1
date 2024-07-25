@@ -1,4 +1,5 @@
 import { ICartData } from '@components/interfaces/interfaces';
+import { MouseEventHandler } from 'react';
 
 export const makeNameCapital = (name: string) => {
   if (name.length > 0) {
@@ -47,3 +48,19 @@ export function returnOnlyName(string: string) {
   const splittedName: string = string.split('&&')[0];
   return splittedName;
 }
+
+export const setResults = (savedToCart: ICartData, handleButtonClick: MouseEventHandler<HTMLButtonElement>) => {
+  const results = [];
+  for (const [key, value] of Object.entries(savedToCart)) {
+    const capitalizedName = makeNameCapital(value) || '';
+    results.push(
+      <div key={`cart${key}${value}`} className="cart-element-wrapper">
+        <button className="remove-from-cart" data-value={`stored-${key}`} onClick={handleButtonClick}>
+          Remove
+        </button>
+        <div>{returnOnlyName(capitalizedName)}</div>
+      </div>
+    );
+  }
+  return results;
+};

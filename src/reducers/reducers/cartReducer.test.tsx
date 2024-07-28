@@ -58,6 +58,6 @@ describe('cartReducer', () => {
     };
     const newState = cartReducer(initialState, action);
 
-    expect(newState.savedCartData[1]).toBe('bulbasaur&&1&&green pokemon&&https://pokeapi.co/api/v2/pokemon-species/1/');
+    expect(newState.savedCartData[1]).toBe('Bulbasaur&&1&&green pokemon&&https://pokeapi.co/api/v2/pokemon-species/1/');
   });
 });

@@ -24,7 +24,7 @@ export const download = (data: BlobPart, fileName: string) => {
 
 export const jsonToCsv = (cartIDs: string[], jsonObject: ICartData) => {
   const description = `P.S. there were 2 variants of CSV markup, but I chose this\n`;
-  const header = `Pokemon number;Pokemon name;Description;URL to Data\n"1";"bulbasaur"`;
+  const header = `Pokemon number;Pokemon name;Description;URL to Data\n`;
   let data = [];
   for (let i = 0; i < cartIDs.length; i += 1) {
     data.push(`"${jsonObject[cartIDs[i]].replace(/&&/g, '";"').replace(/\n/g, ' ')}"`);

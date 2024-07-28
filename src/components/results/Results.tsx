@@ -30,7 +30,7 @@ const Results = () => {
   const [pokemonData, setPokemonData] = useState<ICheckboxData>({ checked: false, pokemonId: null });
   const [pokemonId, setPokemonId] = useState<string>('');
   const [samePokemonClicked, setSamePokemonClicked] = useState<boolean>(false);
-  const { data, error } = useGetPokemonByIdQuery(pokemonId, {
+  const { data, error, isFetching } = useGetPokemonByIdQuery(pokemonId, {
     skip: !pokemonId || pokemonId == '',
   });
 
@@ -119,6 +119,7 @@ const Results = () => {
                       <input
                         type="checkbox"
                         checked={pokemonsOnPage[index].checkBox}
+                        disabled={isFetching}
                         onChange={(e) => handleCheckboxChange(e, index)}
                       />
                       <Link

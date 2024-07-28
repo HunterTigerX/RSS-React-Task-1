@@ -1,4 +1,5 @@
 import { ICartPayload } from '@components/interfaces/interfaces';
+import { makeNameCapital } from '@components/methods/urlMethods';
 
 const initialState = {
   savedCartData: {},
@@ -19,7 +20,7 @@ const cartReducer = (state = initialState, action: { type: string; payload: ICar
 
     case 'UPDATE_CART': {
       const pokemonId = action.payload.id;
-      const pokemonName = action.payload.name;
+      const pokemonName = makeNameCapital(action.payload.name);
       const description = action.payload.flavor_text_entries[0].flavor_text.replace('', ' ');
       const url = `https://pokeapi.co/api/v2/pokemon-species/${action.payload.id}/`;
       const deepCopy = JSON.stringify(state.savedCartData);

@@ -36,7 +36,7 @@ describe('Location Data Functions', () => {
   it('should return correct csv data', () => {
     const result = jsonToCsv(idArray, mockedCart);
     const newExpected =
-      'P.S. there were 2 variants of CSV markup, but I chose this\nPokemon number;Pokemon name;Description;URL to Data\n"1";"bulbasaur""bulbasaur"';
+      'P.S. there were 2 variants of CSV markup, but I chose this\nPokemon number;Pokemon name;Description;URL to Data\n"bulbasaur"';
     expect(result).toBe(newExpected);
   });
 

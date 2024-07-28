@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { toggleCart, updateCart } from 'reducers/actions/cartActions';
+import { addToCart, updateCart } from 'reducers/actions/cartActions';
 import { mockedIdSearch } from '__mocks__/mockedPokemons';
 
 describe('should dispatch the correct actions', () => {
@@ -10,7 +10,7 @@ describe('should dispatch the correct actions', () => {
     const action = true;
     const pokemonName = 'bulbasaur';
 
-    const actionX = toggleCart(pokemonId, action, pokemonName);
+    const actionX = addToCart(pokemonId, action, pokemonName);
 
     await actionX(mockDispatch);
 

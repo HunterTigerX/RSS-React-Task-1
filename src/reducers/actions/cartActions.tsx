@@ -1,6 +1,6 @@
 import { IPokemonCard } from '@components/interfaces/interfaces';
 
-export const toggleCart = (pokemonId: string, action: boolean, pokemonName?: string) => {
+export const addToCart = (pokemonId: string, action: boolean, pokemonName?: string) => {
   return async (
     dispatch: (arg0: {
       type: string;

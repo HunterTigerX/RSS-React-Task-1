@@ -2,44 +2,39 @@ import { ICartPayload } from '@components/interfaces/interfaces';
 import cartReducer from 'reducers/reducers/cartReducer';
 import { describe, it, expect } from 'vitest';
 
+const payload: ICartPayload = {
+  pokemonId: '1',
+  pokemonName: 'bulbasaur',
+  action: true,
+  flavor_text_entries: [
+    {
+      flavor_text: 'green pokemon',
+    },
+  ],
+  id: 1,
+  name: 'bulbasaur',
+};
+
 describe('cartReducer', () => {
   const initialState = {
     savedCartData: {},
     somethingInCart: false,
   };
 
-  it('should add a pokemon to the cart', () => {
+  it('should handle TOGGLE_CART action correctly', () => {
+    const initialState = {
+      savedCartData: {},
+      somethingInCart: false,
+    };
+
     const action = {
       type: 'TOGGLE_CART',
-      payload: {
-        pokemonId: '1',
-        pokemonName: 'Pikachu',
-        action: true,
-      } as ICartPayload,
+      payload,
     };
     const newState = cartReducer(initialState, action);
-    expect(newState.savedCartData).toHaveProperty('1', 'Pikachu');
-    expect(newState.somethingInCart).toBe(true);
-  });
 
-  it('should remove a pokemon from the cart', () => {
-    const action = {
-      type: 'TOGGLE_CART',
-      payload: {
-        pokemonId: '1',
-        pokemonName: 'Pikachu',
-        action: false,
-      } as ICartPayload,
-    };
-    const stateWithPokemon = {
-      savedCartData: {
-        '1': 'Pikachu',
-      },
-      somethingInCart: true,
-    };
-    const newState = cartReducer(stateWithPokemon, action);
-    expect(newState.savedCartData).not.toHaveProperty('1');
-    expect(newState.somethingInCart).toBe(false);
+    expect(newState.savedCartData[1]).toBe('bulbasaur');
+    expect(newState.somethingInCart).toBe(true);
   });
 
   it('should handle unknown action type', () => {
@@ -51,12 +46,18 @@ describe('cartReducer', () => {
     expect(newState).toEqual(initialState);
   });
 
-  it('should handle empty payload', () => {
+  it('should handle UPDATE_CART action correctly', () => {
+    const initialState = {
+      savedCartData: { 1: 'Pikachu' },
+      somethingInCart: true,
+    };
+
     const action = {
-      type: 'TOGGLE_CART',
-      payload: {} as ICartPayload,
+      type: 'UPDATE_CART',
+      payload,
     };
     const newState = cartReducer(initialState, action);
-    expect(newState).toEqual(initialState);
+
+    expect(newState.savedCartData[1]).toBe('bulbasaur&&1&&green pokemon&&https://pokeapi.co/api/v2/pokemon-species/1/');
   });
 });

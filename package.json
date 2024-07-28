@@ -11,8 +11,7 @@
     "format:fix": "prettier . --write",
     "prepare": "husky",
     "test": "vitest  --silent=false",
-    "coverage": "vitest run --coverage",
-    "coverage2": "vitest run --coverage.provider='babel'"
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@babel/core": "^7.24.7",

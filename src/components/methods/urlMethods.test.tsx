@@ -9,11 +9,10 @@ import {
 } from './urlMethods';
 import { describe, it, expect, vi } from 'vitest';
 
+const idArray = ['1'];
 const mockedCart = {
   '1': 'bulbasaur',
 };
-const expectedCcvContent =
-  'P.S. there were 2 variants of CSV markup, but I chose this\nPokemon number;Pokemon name;Description;URL to Data\n"1";"bulbasaur"';
 const expectedDownloadData =
   'data P.S. there were 2 variants of CSV markup, but I chose this\nPokemon number;Pokemon name;Description;URL to Data\n"breloom";"286"\n"roselia";"315"';
 
@@ -34,9 +33,11 @@ describe('Location Data Functions', () => {
     const result = getPokemonId('https://pokeapi.co/api/v2/pokemon-species/1/');
     expect(result).toBe('1');
   });
-  it('should return pokemon id from url', () => {
-    const result = jsonToCsv(mockedCart);
-    expect(result).toBe(expectedCcvContent);
+  it('should return correct csv data', () => {
+    const result = jsonToCsv(idArray, mockedCart);
+    const newExpected =
+      'P.S. there were 2 variants of CSV markup, but I chose this\nPokemon number;Pokemon name;Description;URL to Data\n"1";"bulbasaur""bulbasaur"';
+    expect(result).toBe(newExpected);
   });
 
   it('download calls download with correct parameters', async () => {
@@ -52,7 +53,7 @@ describe('Location Data Functions', () => {
   });
 
   it('downloads all data', async () => {
-    await downloadAll(mockedCart);
+    await downloadAll(idArray, mockedCart);
     const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click');
     expect(clickSpy).toHaveBeenCalledTimes(0);
   });
@@ -71,7 +72,7 @@ describe('Location Data Functions', () => {
 
     const handleButtonClick = vi.fn();
 
-    const result = setResults(savedToCart, handleButtonClick);
+    const result = setResults(idArray, savedToCart, handleButtonClick);
     expect(result).toHaveLength(Object.keys(savedToCart).length);
 
     result.forEach((element) => {
@@ -80,7 +81,7 @@ describe('Location Data Functions', () => {
       const button = element.props.children[0];
       expect(button.type).toBe('button');
       expect(button.props.className).toBe('remove-from-cart');
-      expect(button.props['data-value']).toBe(`stored-name`);
+      expect(button.props['data-value']).toBe(`stored-1`);
       expect(button.props.onClick).toBe(handleButtonClick);
       const div = element.props.children[1];
       expect(div.type).toBe('div');

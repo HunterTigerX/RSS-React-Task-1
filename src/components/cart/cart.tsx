@@ -3,12 +3,13 @@ import { AppDispatch } from 'reducers/root/rootReduces';
 import { MouseEventHandler } from 'react';
 import { setResults } from '@components/methods/urlMethods';
 import { savePokemonsList } from 'reducers/actions/actions';
-import { toggleCart } from 'reducers/actions/cartActions';
+import { addToCart } from 'reducers/actions/cartActions';
 import { IState } from '@components/interfaces/interfaces';
 import './Cart.css';
 
 const Cart = () => {
-  const savedToCart = useSelector((state: IState) => state.cart.savedCartData);
+  const selectedCheckboxes = useSelector((state: IState) => state.searchMain.savedCartIds);
+  const savedToCartData = useSelector((state: IState) => state.cart.savedCartData);
   const somethingInCart = useSelector((state: IState) => state.cart.somethingInCart);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -17,7 +18,7 @@ const Cart = () => {
     const hiddenId = event.currentTarget.getAttribute('data-value');
     if (hiddenId) {
       const pokemonId = hiddenId.replace('stored-', '');
-      dispatch(toggleCart(pokemonId, false));
+      dispatch(addToCart(pokemonId, false));
       dispatch(savePokemonsList());
     }
   };
@@ -28,7 +29,7 @@ const Cart = () => {
       {somethingInCart && (
         <div className="cart">
           <h2>Here is your cart</h2>
-          {savedToCart && setResults(savedToCart, handleButtonClick)}
+          {somethingInCart && setResults(selectedCheckboxes, savedToCartData, handleButtonClick)}
         </div>
       )}
     </>

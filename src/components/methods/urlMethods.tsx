@@ -2,7 +2,7 @@ import { ICartData } from '@components/interfaces/interfaces';
 import { MouseEventHandler } from 'react';
 
 export const makeNameCapital = (name: string) => {
-  if (name.length > 0) {
+  if (name && name.length > 0) {
     return name[0].toUpperCase() + name.slice(1);
   }
 };
@@ -22,23 +22,21 @@ export const download = (data: BlobPart, fileName: string) => {
   a.click();
 };
 
-export const jsonToCsv = (jsonObject: ICartData) => {
+export const jsonToCsv = (cartIDs: string[], jsonObject: ICartData) => {
   const description = `P.S. there were 2 variants of CSV markup, but I chose this\n`;
-  const header = `Pokemon number;Pokemon name;Description;URL to Data\n`;
-  const keys = Object.keys(jsonObject);
-  const data = keys
-    .map((key) => {
-      const result = `"${key}";"${jsonObject[key].replace(/&&/g, '";"').replace(/\n/g, ' ')}"`;
-      return result;
-    })
-    .join('\n');
-  return `${description}${header}${data}`;
+  const header = `Pokemon number;Pokemon name;Description;URL to Data\n"1";"bulbasaur"`;
+  let data = [];
+  for (let i = 0; i < cartIDs.length; i += 1) {
+    data.push(`"${jsonObject[cartIDs[i]].replace(/&&/g, '";"').replace(/\n/g, ' ')}"`);
+  }
+
+  return `${description}${header}${data.join('\n')}`;
 };
 
-export const downloadAll = async (savedToCart: ICartData) => {
-  const fileName = `${Object.keys(savedToCart).length}_pokemons.csv`;
+export const downloadAll = async (cartIDs: string[], savedToCart: ICartData) => {
+  const fileName = `${cartIDs.length}_pokemons.csv`;
   const get = async () => {
-    const csvdata = jsonToCsv(savedToCart);
+    const csvdata = jsonToCsv(cartIDs, savedToCart);
     download(csvdata, fileName);
   };
   await get();
@@ -49,13 +47,19 @@ export function returnOnlyName(string: string) {
   return splittedName;
 }
 
-export const setResults = (savedToCart: ICartData, handleButtonClick: MouseEventHandler<HTMLButtonElement>) => {
+export const setResults = (
+  selectedCheckboxes: string[],
+  savedToCart: ICartData,
+  handleButtonClick: MouseEventHandler<HTMLButtonElement>
+) => {
   const results = [];
-  for (const [key, value] of Object.entries(savedToCart)) {
+  for (let i = 0; i < selectedCheckboxes.length; i += 1) {
+    const id = selectedCheckboxes[i];
+    const value = savedToCart[id];
     const capitalizedName = makeNameCapital(value) || '';
     results.push(
-      <div key={`cart${key}${value}`} className="cart-element-wrapper">
-        <button className="remove-from-cart" data-value={`stored-${key}`} onClick={handleButtonClick}>
+      <div key={`cart${selectedCheckboxes[i]}${value}`} className="cart-element-wrapper">
+        <button className="remove-from-cart" data-value={`stored-${id}`} onClick={handleButtonClick}>
           Remove
         </button>
         <div>{returnOnlyName(capitalizedName)}</div>

@@ -10,7 +10,7 @@ import {
 } from 'reducers/actions/actions';
 import { AppDispatch } from 'reducers/root/rootReduces';
 import { ThemeContext } from 'components/themes/themeContect';
-import { toggleCart, updateCart } from 'reducers/actions/cartActions';
+import { addToCart, updateCart } from 'reducers/actions/cartActions';
 import { useGetPokemonByIdQuery } from 'reducers/root/pokemonApi';
 import { IState, IPokemonData } from '@components/interfaces/interfaces';
 import './results.css';
@@ -38,7 +38,7 @@ const Results = () => {
     const isChecked = event.target.checked;
     const selectedPokemonId = pokemonsOnPage[index].id;
     const selectedPokemonName = pokemonsOnPage[index].name;
-    dispatch(toggleCart(selectedPokemonId, isChecked, selectedPokemonName));
+    dispatch(addToCart(selectedPokemonId, isChecked, selectedPokemonName));
     setPokemonId(selectedPokemonId);
     dispatch(savePokemonsList());
     setPokemonData({

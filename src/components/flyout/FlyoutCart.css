@@ -1,0 +1,10 @@
+.flyout_cart {
+  display: flex;
+  flex-direction: row;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  gap: 10px;
+  justify-content: center;
+  background-color: aliceblue;
+}

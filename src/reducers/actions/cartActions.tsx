@@ -1,4 +1,4 @@
-import { IPokemonCard } from '@components/interfaces/interfaces';
+import { IPokemonCard } from '@/interfaces/interfaces';
 
 export const addToCart = (pokemonId: string, action: boolean, pokemonName?: string) => {
   return async (
@@ -17,5 +17,11 @@ export const addToCart = (pokemonId: string, action: boolean, pokemonName?: stri
 export const updateCart = (pokemonData: IPokemonCard) => {
   return async (dispatch: (arg0: { type: string; payload: IPokemonCard }) => void) => {
     dispatch({ type: 'UPDATE_CART', payload: pokemonData });
+  };
+};
+
+export const closeFlyout = () => {
+  return {
+    type: 'CLOSE_FLYOUT',
   };
 };

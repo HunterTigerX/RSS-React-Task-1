@@ -1,7 +1,9 @@
-import { IPokemonCard } from '@components/interfaces/interfaces';
+import { IPokemonCard } from '@/interfaces/interfaces';
 
 const initialState = {
+  linkClicked: false,
   loadingRight: false,
+  overlayStatus: false,
   error: null,
   pokemonName: '',
   pokemonImage: '',
@@ -25,6 +27,20 @@ const searchSideReducer = (state = initialState, action: { type: string; payload
       return {
         ...state,
         loadingRight: true,
+      };
+    }
+    case 'SIDE_LINK_CLICKED': {
+      return {
+        ...state,
+        linkClicked: true,
+        overlayStatus: true,
+      };
+    }
+    case 'SIDE_LINK_UNCLICKED': {
+      return {
+        ...state,
+        linkClicked: false,
+        overlayStatus: false,
       };
     }
 

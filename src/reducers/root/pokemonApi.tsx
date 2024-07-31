@@ -1,4 +1,4 @@
-import { ISearchData, IPokemonCard } from '@components/interfaces/interfaces';
+import { ISearchData, IPokemonCard } from '@/interfaces/interfaces';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const pokemonApi = createApi({

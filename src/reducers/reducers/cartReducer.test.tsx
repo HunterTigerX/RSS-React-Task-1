@@ -1,6 +1,6 @@
-import { ICartPayload } from '@components/interfaces/interfaces';
-import cartReducer from 'reducers/reducers/cartReducer';
+import { ICartPayload } from '@/interfaces/interfaces';
 import { describe, it, expect } from 'vitest';
+import cartReducer from './cartReducer';
 
 const payload: ICartPayload = {
   pokemonId: '1',
@@ -59,5 +59,14 @@ describe('cartReducer', () => {
     const newState = cartReducer(initialState, action);
 
     expect(newState.savedCartData[1]).toBe('Bulbasaur&&1&&green pokemon&&https://pokeapi.co/api/v2/pokemon-species/1/');
+  });
+
+  it('should handle CLOSE_FLYOUT action correctly', () => {
+    const action = {
+      type: 'CLOSE_FLYOUT',
+      payload: payload,
+    };
+    const newState = cartReducer(initialState, action);
+    expect(newState.somethingInCart).toBe(false);
   });
 });

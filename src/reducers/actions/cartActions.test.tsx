@@ -1,6 +1,6 @@
+import { mockedIdSearch } from '@/__mocks__/mockedPokemons';
 import { describe, it, expect, vi } from 'vitest';
-import { addToCart, updateCart } from 'reducers/actions/cartActions';
-import { mockedIdSearch } from '__mocks__/mockedPokemons';
+import { addToCart, updateCart } from './cartActions';
 
 describe('should dispatch the correct actions', () => {
   it('should change page', async () => {

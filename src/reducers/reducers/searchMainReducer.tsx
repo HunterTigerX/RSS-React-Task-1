@@ -1,10 +1,9 @@
-import { IStateMain, ISearchData, ISearchMainResults } from '@components/interfaces/interfaces';
-import { getPokemonId } from '@components/methods/urlMethods';
+import { returnPokemonList } from '@/components/urlMethods';
+import { IStateMain, ISearchData } from '@/interfaces/interfaces';
 
 const initialState: IStateMain = {
   pokemonData: null,
   isLoading: false,
-  loadingRight: false,
   error: null,
   currentPage: 1,
   maxPages: 0,
@@ -70,32 +69,21 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
     case 'SAVE_CURRENT_POKEMONS': {
       const firstPagePokemonsCount =
         state.totalPokemons < state.pokemonsPerPage ? state.totalPokemons : state.pokemonsPerPage;
-      const resultList: ISearchMainResults[] = [];
+      const middlePageStartNumber = state.totalPokemons - state.pokemonsPerPage * (state.maxPages - 1);
+      const numberOfPokemons =
+        state.currentPage === 1
+          ? firstPagePokemonsCount
+          : state.currentPage === state.maxPages
+            ? middlePageStartNumber
+            : state.pokemonsPerPage;
 
-      const returnPokemonsList = (numberOfPokemons: number) => {
-        const start = (state.currentPage - 1) * state.pokemonsPerPage;
-        const isArray = Array.isArray(state.pokemonsList);
-        if (isArray && state.pokemonsList.length > 0) {
-          for (let i = start; i < start + numberOfPokemons; i += 1) {
-            if (state.pokemonsList[i]) {
-              const pokemonId = getPokemonId(state.pokemonsList[i].url);
-              resultList.push({
-                name: state.pokemonsList[i].name,
-                id: pokemonId,
-                checkBox: state.savedCartIds.includes(pokemonId) ? true : false,
-              });
-            }
-          }
-        }
-      };
-
-      if (state.currentPage === 1) {
-        returnPokemonsList(firstPagePokemonsCount);
-      } else if (state.currentPage === state.maxPages) {
-        returnPokemonsList(state.totalPokemons - state.pokemonsPerPage * (state.maxPages - 1));
-      } else {
-        returnPokemonsList(state.pokemonsPerPage);
-      }
+      const resultList = returnPokemonList(
+        numberOfPokemons,
+        state.pokemonsPerPage,
+        state.currentPage,
+        state.pokemonsList,
+        state.savedCartIds
+      );
 
       return {
         ...state,
@@ -103,8 +91,8 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
       };
     }
 
-    case 'TOGGLE_RIGHT_PANEL': {
-      return { ...state, showRightPanel: action.payload ? true : false };
+    case 'OPEN_RIGHT_PANEL': {
+      return { ...state, showRightPanel: true };
     }
 
     case 'CLOSE_RIGHT_PANEL': {

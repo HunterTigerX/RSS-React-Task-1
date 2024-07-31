@@ -1,8 +1,7 @@
-import { ISearchData, IPokemonCard } from '@components/interfaces/interfaces';
+import { ISearchData, IPokemonCard } from '@/interfaces/interfaces';
 
 export const changePage = (newPage: number) => {
   return async (dispatch: (arg0: { type: string; payload?: number }) => void) => {
-    dispatch({ type: 'TOGGLE_RIGHT_PANEL' });
     dispatch({
       type: 'CHANGE_PAGE',
       payload: newPage,
@@ -12,7 +11,6 @@ export const changePage = (newPage: number) => {
 
 export const searchMain = (data: ISearchData) => {
   return async (dispatch: (arg0: { type: string; payload?: ISearchData | string }) => void) => {
-    dispatch({ type: 'CLOSE_RIGHT_PANEL' });
     dispatch({ type: 'FETCH_MAIN_DATA_SUCCESS', payload: data });
     dispatch({ type: 'SAVE_CURRENT_POKEMONS' });
   };
@@ -35,11 +33,14 @@ export const searchSide = (pokemonData: IPokemonCard) => {
   };
 };
 
-export const toggleRightPanel = (state?: boolean) => {
-  return async (dispatch: (arg0: { type: string; payload: boolean | undefined }) => void) => {
-    dispatch({ type: 'TOGGLE_RIGHT_PANEL', payload: state });
-  };
+export const openRightPanel = () => {
+  return { type: 'OPEN_RIGHT_PANEL' };
 };
+
+export const closeRightPanel = () => {
+  return { type: 'CLOSE_RIGHT_PANEL' };
+};
+
 export const updateInput = (input: string) => {
   return async (dispatch: (arg0: { type: string; payload: string }) => void) => {
     dispatch({ type: 'UPDATE_INPUT', payload: input });
@@ -60,5 +61,17 @@ export const setLoadingRight = () => {
 export const goToPageOne = () => {
   return {
     type: 'CHANGE_PAGE_ONE',
+  };
+};
+
+export const sideLinkClicked = () => {
+  return {
+    type: 'SIDE_LINK_CLICKED',
+  };
+};
+
+export const sideLinkUnClicked = () => {
+  return {
+    type: 'SIDE_LINK_UNCLICKED',
   };
 };

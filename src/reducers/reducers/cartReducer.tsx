@@ -1,5 +1,5 @@
-import { ICartPayload } from '@components/interfaces/interfaces';
-import { makeNameCapital } from '@components/methods/urlMethods';
+import { makeNameCapital } from '@/components/urlMethods';
+import { ICartPayload } from '@/interfaces/interfaces';
 
 const initialState = {
   savedCartData: {},
@@ -30,6 +30,10 @@ const cartReducer = (state = initialState, action: { type: string; payload: ICar
         savedCartDataCopy[action.payload.id] = newValue;
       }
       return { ...state, savedCartData: savedCartDataCopy };
+    }
+
+    case 'CLOSE_FLYOUT': {
+      return { ...state, somethingInCart: false };
     }
 
     default:

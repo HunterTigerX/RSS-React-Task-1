@@ -1,6 +1,6 @@
-import { mockedColorSearch } from '__mocks__/mockedPokemons';
-import searchMainReducer from 'reducers/reducers/searchMainReducer';
+import { mockedColorSearch } from '@/__mocks__/mockedPokemons';
 import { describe, it, expect } from 'vitest';
+import searchMainReducer from './searchMainReducer';
 
 const initialState = {
   pokemonData: null,
@@ -107,7 +107,7 @@ describe('searchMainReducer', () => {
 
   it('should toggle right panel correctly', () => {
     const action = {
-      type: 'TOGGLE_RIGHT_PANEL',
+      type: 'OPEN_RIGHT_PANEL',
       payload: mockedColorSearch,
     };
     const newState = searchMainReducer(initialState, action);

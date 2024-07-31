@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import searchMainReducer from 'reducers/reducers/searchMainReducer';
-import searchSideReducer from 'reducers/reducers/searchSideReducer';
-import cartReducer from 'reducers/reducers/cartReducer';
 import { pokemonApi } from './pokemonApi';
+import cartReducer from '../reducers/cartReducer';
+import searchMainReducer from '../reducers/searchMainReducer';
+import searchSideReducer from '../reducers/searchSideReducer';
 
 const rootReducer = combineReducers({
   searchMain: searchMainReducer,

@@ -1,3 +1,4 @@
+import { mockedColorSearch, mockedIdSearch } from '@/__mocks__/mockedPokemons';
 import { describe, it, expect, vi } from 'vitest';
 import {
   changePage,
@@ -5,27 +6,24 @@ import {
   searchFailed,
   savePokemonsList,
   searchSide,
-  toggleRightPanel,
   updateInput,
   saveInput,
   setLoadingRight,
   goToPageOne,
-} from 'reducers/actions/actions';
-import { mockedColorSearch, mockedIdSearch } from '__mocks__/mockedPokemons';
+  openRightPanel,
+  closeRightPanel,
+  sideLinkClicked,
+  sideLinkUnClicked,
+} from './actions';
 
 describe('should dispatch the correct actions', () => {
   it('should change page', async () => {
     const mockDispatch = vi.fn();
-
     const newPage = 2;
     const action = changePage(newPage);
-
     await action(mockDispatch);
-
-    expect(mockDispatch).toHaveBeenCalledTimes(2);
-
-    expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'TOGGLE_RIGHT_PANEL' });
-    expect(mockDispatch).toHaveBeenNthCalledWith(2, { type: 'CHANGE_PAGE', payload: newPage });
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'CHANGE_PAGE', payload: newPage });
   });
 
   it('should search pokemon by color', async () => {
@@ -35,11 +33,10 @@ describe('should dispatch the correct actions', () => {
 
     await action(mockDispatch);
 
-    expect(mockDispatch).toHaveBeenCalledTimes(3);
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
 
-    expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'CLOSE_RIGHT_PANEL' });
-    expect(mockDispatch).toHaveBeenNthCalledWith(2, { type: 'FETCH_MAIN_DATA_SUCCESS', payload: mockedColorSearch });
-    expect(mockDispatch).toHaveBeenNthCalledWith(3, { type: 'SAVE_CURRENT_POKEMONS' });
+    expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'FETCH_MAIN_DATA_SUCCESS', payload: mockedColorSearch });
+    expect(mockDispatch).toHaveBeenNthCalledWith(2, { type: 'SAVE_CURRENT_POKEMONS' });
   });
 
   it('should update data if search failed', async () => {
@@ -71,16 +68,13 @@ describe('should dispatch the correct actions', () => {
     expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'FETCH_POKEMON_DATA_SUCCESS', payload: mockedIdSearch });
   });
 
-  it('should show or hide pokemon card', async () => {
-    const mockDispatch = vi.fn();
-    const state = false;
-    const action = toggleRightPanel(state);
-
-    await action(mockDispatch);
-
-    expect(mockDispatch).toHaveBeenCalledTimes(1);
-
-    expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'TOGGLE_RIGHT_PANEL', payload: state });
+  it('should show okemon card', async () => {
+    const action = openRightPanel();
+    expect(action).toEqual({ type: 'OPEN_RIGHT_PANEL' });
+  });
+  it('should close okemon card', async () => {
+    const action = closeRightPanel();
+    expect(action).toEqual({ type: 'CLOSE_RIGHT_PANEL' });
   });
 
   it('should update search input', async () => {
@@ -116,4 +110,14 @@ describe('should dispatch the correct actions', () => {
     const action = goToPageOne();
     expect(action).toEqual({ type: 'CHANGE_PAGE_ONE' });
   });
+});
+
+it('side link was clicked', async () => {
+  const action = sideLinkClicked();
+  expect(action).toEqual({ type: 'SIDE_LINK_CLICKED' });
+});
+
+it('side link status changed', async () => {
+  const action = sideLinkUnClicked();
+  expect(action).toEqual({ type: 'SIDE_LINK_UNCLICKED' });
 });

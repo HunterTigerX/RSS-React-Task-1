@@ -1,10 +1,12 @@
-import { mockedIdSearch } from '__mocks__/mockedPokemons';
-import searchSideReducer from 'reducers/reducers/searchSideReducer';
+import { mockedIdSearch } from '@/__mocks__/mockedPokemons';
 import { describe, it, expect } from 'vitest';
+import searchSideReducer from './searchSideReducer';
 
 describe('searchSideReducer', () => {
   const initialState = {
+    linkClicked: false,
     loadingRight: false,
+    overlayStatus: false,
     error: null,
     pokemonName: '',
     pokemonImage: '',
@@ -44,6 +46,18 @@ describe('searchSideReducer', () => {
     const action = { type: 'SET_LOADING_RIGHT', payload: mockedIdSearch };
     const newState = searchSideReducer(initialState, action);
     expect(newState.loadingRight).toBe(true);
+  });
+  it('should handle SIDE_LINK_CLICKED action', () => {
+    const action = { type: 'SIDE_LINK_CLICKED', payload: mockedIdSearch };
+    const newState = searchSideReducer(initialState, action);
+    expect(newState.linkClicked).toBe(true);
+    expect(newState.overlayStatus).toBe(true);
+  });
+  it('should handle SIDE_LINK_UNCLICKED action', () => {
+    const action = { type: 'SIDE_LINK_UNCLICKED', payload: mockedIdSearch };
+    const newState = searchSideReducer(initialState, action);
+    expect(newState.linkClicked).toBe(false);
+    expect(newState.overlayStatus).toBe(false);
   });
 
   it('should return the current state for unknown action type', () => {

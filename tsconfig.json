@@ -14,14 +14,20 @@
     "incremental": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "src/pages/page/[pokemonId].test.tsx",
-    "src/pages/page/[pageId].test.tsx"
+    "src/pages/page/[pageId].test.tsx",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules", ".next"]
 }

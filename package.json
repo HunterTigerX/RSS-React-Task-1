@@ -26,6 +26,7 @@
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.10",
     "axios": "^1.7.2",
+    "cookies-next": "^4.2.1",
     "enzyme": "^3.11.0",
     "eslint": "^9.6.0",
     "eslint-plugin-react-compiler": "^0.0.0-experimental-0998c1e-20240625",

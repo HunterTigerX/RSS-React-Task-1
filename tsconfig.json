@@ -27,7 +27,8 @@
     "**/*.tsx",
     "src/pages/page/[pokemonId].test.tsx",
     "src/pages/page/[pageId].test.tsx",
-    ".next/types/**/*.ts"
-, "src/pages/page/[pokemon].test.tsx"  ],
+    ".next/types/**/*.ts",
+    "src/pages/page/[pokemon].test.tsx"
+  ],
   "exclude": ["node_modules", ".next"]
 }

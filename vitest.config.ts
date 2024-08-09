@@ -4,6 +4,7 @@ import { defineConfig } from 'vitest/config';
 import { defineConfig as viteDefineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+
 export default defineConfig(
   viteDefineConfig({
     base: '',
@@ -16,7 +17,7 @@ export default defineConfig(
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: ['src/__tests__/config/config.ts'],
+      setupFiles: ['./src/pages/__tests__/config/config.ts'],
       exclude: ['.next', 'node_modules'],
     },
   })

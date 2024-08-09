@@ -1,11 +1,12 @@
-import { Provider } from 'react-redux';
-import { Main } from './Main';
-import store from '../reducers/root/rootReduces';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
-  return (
-    <Provider store={store}>
-      <Main pageId={'1'} pokemonId={undefined} />
-    </Provider>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push(`/page/1?black`);
+  }, []);
+
+  return <></>;
 }

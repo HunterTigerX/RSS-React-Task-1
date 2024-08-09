@@ -1,14 +1,20 @@
-import type { AppProps } from 'next/app';
-import '../styles/Search.css';
-import '../styles/PokemonCard.css';
-import '../styles/Cart.css';
-import '../styles/FlyoutCart.css';
-import '../styles/ErrorPage.css';
-import '../styles/Main.css';
-import '../styles/Button.css';
-import '../styles/Results.css';
-import '../styles/Pagination.css';
+import { Provider } from 'react-redux';
+import store from './reducers/root/rootReduces';
+import './styles/global.css';
+import { ThemeProvider } from './themes/themeContect';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+export default function MyApp({
+  Component,
+  pageProps,
+}: {
+  Component: React.ComponentType;
+  pageProps: Record<string, string>;
+}) {
+  return (
+    <ThemeProvider>
+      <Provider store={store}>
+        <Component {...pageProps} />
+      </Provider>
+    </ThemeProvider>
+  );
 }

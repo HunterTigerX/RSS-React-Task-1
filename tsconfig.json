@@ -25,10 +25,11 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/pages/page/[pokemonId].test.tsx",
-    "src/pages/page/[pageId].test.tsx",
+    "src/app/page/[pokemonId].test.tsx",
+    "src/app/page/[pageId].test.tsx",
     ".next/types/**/*.ts",
-    "src/pages/page/[pokemon].test.tsx"
+    "src/app/__tests__/[pokemon].test.tsx",
+    "src/pages/color/[color].tsx0"
   ],
   "exclude": ["node_modules", ".next"]
 }

@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import PokemonPage from './[pokemon]';
 import { mockedIdSearch } from '@/pages/__mocks__/mockedPokemons';
+import PokemonPage from './[page]/pokemon/[pokemon]';
 
 vi.mock('next/navigation', () => ({
   usePathname: vi.fn(() => 'http://localhost:3000/page/1/pokemon/114'),

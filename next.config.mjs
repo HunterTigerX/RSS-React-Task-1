@@ -15,7 +15,6 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-  styledComponents: true,
 };
 
 export default nextConfig;

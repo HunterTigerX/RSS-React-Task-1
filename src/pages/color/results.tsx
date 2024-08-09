@@ -42,7 +42,7 @@ const ResultsPage = ({ data, error }: { data: ISearchDataBasic; error: boolean }
         <Search data={data} error={error}></Search>
         <ErrorButton errorEnable={''}></ErrorButton>
         <Results></Results>
-        <Pagination />
+        <Pagination data={data} error />
         <Cart></Cart>
       </div>
       <div className="bottom-container resultsX-container">

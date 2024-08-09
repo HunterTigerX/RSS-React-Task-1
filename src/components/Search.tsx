@@ -23,7 +23,7 @@ const Search: React.FC<SearchProps> = ({ data, error }) => {
   const color = data.name;
 
   useEffect(() => {
-    if (data) {
+    if (data && !error) {
       dispatch(searchMain(data as ISearchData));
       dispatch(savePokemonsList());
     }

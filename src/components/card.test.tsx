@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import PokemonPage, { getServerSideProps } from './card';
+import PokemonPage, { getServerSideProps } from '@/pages/color/pokemon/card';
 import { mockedIdSearch } from '@/__mocks__/mockedPokemons';
 
 vi.mock('next/navigation', () => ({

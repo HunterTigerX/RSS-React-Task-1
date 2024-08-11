@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { mockedColorSearch } from '../../__mocks__/mockedPokemons';
+import { mockedColorSearch } from '../__mocks__/mockedPokemons';
 import { Provider } from 'react-redux';
 import store from '@/reducers/root/rootReduces';
 import ResultsPage, { getServerSideProps } from '@/pages/color/results';

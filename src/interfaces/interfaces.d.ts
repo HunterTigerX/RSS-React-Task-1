@@ -1,10 +1,6 @@
 export type onCardChangedFunction = () => void;
-
-export interface IPokemonData {
-  name: string;
-  description: string;
-  image: string;
-}
+export type onPageChangedFunction = () => void;
+export type OnSearchEndFunction = () => void;
 
 export interface IPokemonData {
   id: string;
@@ -13,20 +9,10 @@ export interface IPokemonData {
   checkBox: boolean;
 }
 
-export type onPageChangedFunction = () => void;
-
-export interface IPokemonData {
-  name: string;
-  description: string;
-  image: string;
-}
-
 export interface IPokemonSpecies {
   name: string;
   url: string;
 }
-
-export type OnSearchEndFunction = () => void;
 
 export interface ICurrentUrlData {
   color: string | null;
@@ -140,6 +126,7 @@ export interface IStateMain {
   hasError: boolean;
   savedCartIds: string[];
   currentInput: string;
+  savedSearches: string[];
 }
 
 export interface ISearchMainResults {
@@ -191,6 +178,12 @@ export interface SideProps {
 }
 
 export interface SearchProps {
+  data: ISearchDataBasic;
+  error: boolean;
+  lastSearch: string;
+}
+
+export interface PaginationProps {
   data: ISearchDataBasic;
   error: boolean;
 }

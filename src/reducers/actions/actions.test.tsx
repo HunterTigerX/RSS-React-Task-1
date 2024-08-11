@@ -13,6 +13,7 @@ import {
   closeRightPanel,
   sideLinkClicked,
   sideLinkUnClicked,
+  saveSearchedValues,
 } from './actions';
 import { mockedColorSearch, mockedIdSearch } from '@/__mocks__/mockedPokemons';
 
@@ -120,4 +121,16 @@ it('side link was clicked', async () => {
 it('side link status changed', async () => {
   const action = sideLinkUnClicked();
   expect(action).toEqual({ type: 'SIDE_LINK_UNCLICKED' });
+});
+
+it('should save last searched value', async () => {
+  const mockDispatch = vi.fn();
+  const input = 'text';
+  const action = saveSearchedValues(input);
+
+  await action(mockDispatch);
+
+  expect(mockDispatch).toHaveBeenCalledTimes(1);
+
+  expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'SAVE_SEARCHED', payload: input });
 });

@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { changePage } from '../reducers/actions/actions';
 import { AppDispatch } from '../reducers/root/rootReduces';
-import { IState, SearchProps } from '@/interfaces/interfaces';
+import { IState, PaginationProps } from '@/interfaces/interfaces';
 
-const Pagination: React.FC<SearchProps> = ({ data }) => {
+const Pagination: React.FC<PaginationProps> = ({ data }) => {
   const dispatch = useDispatch<AppDispatch>();
   const maxPages = useSelector((state: IState) => state.searchMain.maxPages);
   const pokemonsOnPage = useSelector((state: IState) => state.searchMain.pokemonsOnPage);

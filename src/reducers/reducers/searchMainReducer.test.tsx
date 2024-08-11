@@ -20,6 +20,7 @@ const initialState = {
   savedCartIds: [],
   currentInput: '',
   savedInput: '',
+  savedSearches: [],
 };
 
 describe('searchMainReducer', () => {
@@ -130,5 +131,14 @@ describe('searchMainReducer', () => {
     };
     const newState = searchMainReducer(initialState, action);
     expect(newState.savedCartIds).toHaveLength(1);
+  });
+
+  it('should update checkbox correctly', () => {
+    const action = {
+      type: 'SAVE_SEARCHED',
+      payload: mockedColorSearch,
+    };
+    const newState = searchMainReducer(initialState, action);
+    expect(newState.savedCartIds).toHaveLength(0);
   });
 });

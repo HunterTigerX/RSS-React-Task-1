@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -10,17 +10,35 @@ import {
   updateInput,
   goToPageOne,
   saveInput,
+  saveSearchedValues,
 } from '../reducers/actions/actions';
 import { AppDispatch } from '../reducers/root/rootReduces';
 import { SearchProps, IState, ISearchData } from '@/interfaces/interfaces';
 import { ThemeContext } from '@/themes/themeContect';
 
-const Search: React.FC<SearchProps> = ({ data, error }) => {
+const Search: React.FC<SearchProps> = ({ data, error, lastSearch }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const currentInput = useSelector((state: IState) => state.searchMain.currentInput);
+  const currentInputX = useSelector((state: IState) => state.searchMain.currentInput);
+  const savedSearches = useSelector((state: IState) => state.searchMain.savedSearches);
+  const [lastInput, setLastInput] = useState('');
+  const [inputChanged, setInputChanged] = useState(false);
+  const [lastData, setLastData] = useState({});
+  const [isLoading, setisLoading] = useState(false);
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
   const color = data.name;
+  const currentInput = currentInputX === '' && inputChanged !== true ? lastInput : currentInputX;
+
+  useEffect(() => {
+    setLastInput(lastSearch);
+  }, []);
+
+  useEffect(() => {
+    if (data !== lastData) {
+      setLastData(data);
+      setisLoading(false);
+    }
+  }, [data, lastData]);
 
   useEffect(() => {
     if (data && !error) {
@@ -35,11 +53,20 @@ const Search: React.FC<SearchProps> = ({ data, error }) => {
   }, [data, dispatch]);
 
   const updatecurrentInput = (input: string) => {
+    setInputChanged(true);
     dispatch(updateInput(input));
   };
 
   const handleSearch = () => {
-    const checkedInput = currentInput === '' ? '1' : currentInput;
+    const stringedInput = String(currentInput);
+
+    if (String(lastSearch) !== stringedInput) {
+      if (!savedSearches.includes(stringedInput)) {
+        dispatch(saveSearchedValues(stringedInput));
+        setisLoading(true);
+      }
+    }
+    const checkedInput = currentInput === '' ? 'black' : currentInput;
     router.push(`/color/${checkedInput}`);
     dispatch(goToPageOne());
     dispatch(saveInput(checkedInput));
@@ -47,24 +74,22 @@ const Search: React.FC<SearchProps> = ({ data, error }) => {
 
   return (
     <>
-      {error && <div>Oops! Something went wrong</div>}
-      {!error && (
-        <div>
-          <div className="top-section">
-            <button className={`button_${theme} search_button`} onClick={handleSearch}>
-              Search
-            </button>
-            <input
-              type="text"
-              value={currentInput === '' ? color : currentInput}
-              onChange={(e) => {
-                updatecurrentInput(e.target.value);
-              }}
-              placeholder="Enter Pokemon's color"
-            />
-          </div>
+      <div>
+        {isLoading && <div id="loading"></div>}
+        <div className="top-section">
+          <button className={`button_${theme} search_button`} onClick={handleSearch}>
+            Search
+          </button>
+          <input
+            type="text"
+            value={currentInput === '' ? color : currentInput}
+            onChange={(e) => {
+              updatecurrentInput(e.target.value);
+            }}
+            placeholder="Enter Pokemon's color"
+          />
         </div>
-      )}
+      </div>
     </>
   );
 };

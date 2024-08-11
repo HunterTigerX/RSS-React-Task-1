@@ -23,16 +23,18 @@ async function getPost(params: { color: string }) {
     return {
       results: post,
       error: false,
+      lastSearch: params.color,
     };
   } catch (err) {
     return {
       results: {},
       error: true,
+      lastSearch: params.color,
     };
   }
 }
 
 export default async function Post({ params }: { params: { color: string } }) {
   const post = await getPost(params);
-  return <ResultsPage data={post.results} error={post.error} />;
+  return <ResultsPage data={post.results} error={post.error} lastSearch={post.lastSearch} />;
 }

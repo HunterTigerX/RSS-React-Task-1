@@ -30,7 +30,7 @@ export async function getServerSideProps(context: { query: IPageContextQuery; pa
   }
 }
 
-const ResultsPage = ({ data, error }: { data: ISearchDataBasic; error: boolean }) => {
+const ResultsPage = ({ data, error, lastSearch }: { data: ISearchDataBasic; error: boolean; lastSearch: string }) => {
   const { theme } = useContext(ThemeContext);
 
   return (
@@ -39,15 +39,13 @@ const ResultsPage = ({ data, error }: { data: ISearchDataBasic; error: boolean }
         <ThemeSwitcher></ThemeSwitcher>
       </div>
       <div className="middle-container resultsX-container">
-        <Search data={data} error={error}></Search>
+        <Search data={data} error={error} lastSearch={lastSearch}></Search>
         <ErrorButton errorEnable={''}></ErrorButton>
         <Results></Results>
         <Pagination data={data} error />
         <Cart></Cart>
       </div>
-      <div className="bottom-container resultsX-container">
-        <FlyoutCart></FlyoutCart>
-      </div>
+      <FlyoutCart></FlyoutCart>
     </div>
   );
 };

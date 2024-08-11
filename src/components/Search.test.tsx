@@ -20,7 +20,7 @@ vi.mock('next/router', () => ({
 const MockedSearch = () => {
   return (
     <Provider store={store}>
-      <Search data={mockedColorSearch} error={'undefined'} />
+      <Search data={mockedColorSearch} error={false} lastSearch="color/1" />
     </Provider>
   );
 };

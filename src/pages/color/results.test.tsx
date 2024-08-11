@@ -23,7 +23,7 @@ describe('ResultsPage', () => {
   it('renders Main component with correct props', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <ResultsPage data={mockedColorSearch} error={false} />
+        <ResultsPage data={mockedColorSearch} error={false} lastSearch="color/1" />
       </Provider>
     );
     expect(getByText(/Enable/i)).toBeInTheDocument();

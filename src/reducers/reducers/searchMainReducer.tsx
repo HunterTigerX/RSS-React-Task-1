@@ -18,6 +18,7 @@ const initialState: IStateMain = {
   savedCartIds: [],
   currentInput: '',
   savedInput: '',
+  savedSearches: [],
 };
 
 const searchMainReducer = (state = initialState, action: { type: string; payload: ISearchData }) => {
@@ -63,6 +64,14 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
       return {
         ...state,
         currentPage: action.payload,
+      };
+    }
+    case 'SAVE_SEARCHED': {
+      const resuls = String(action.payload);
+      const newArray = state.savedSearches.concat([resuls]);
+      return {
+        ...state,
+        savedSearches: newArray,
       };
     }
 

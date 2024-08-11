@@ -75,3 +75,9 @@ export const sideLinkUnClicked = () => {
     type: 'SIDE_LINK_UNCLICKED',
   };
 };
+
+export const saveSearchedValues = (input: string) => {
+  return async (dispatch: (arg0: { type: string; payload: string }) => void) => {
+    dispatch({ type: 'SAVE_SEARCHED', payload: input });
+  };
+};

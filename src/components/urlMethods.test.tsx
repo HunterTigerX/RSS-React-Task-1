@@ -10,6 +10,7 @@ import {
 } from './urlMethods';
 import { describe, it, expect, vi } from 'vitest';
 
+HTMLAnchorElement.prototype.click = vi.fn();
 const idArray = ['1'];
 const mockedCart = {
   '1': 'bulbasaur',

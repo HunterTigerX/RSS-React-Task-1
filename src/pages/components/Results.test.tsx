@@ -8,7 +8,7 @@ import { mockedColorSearch } from '../__mocks__/mockedPokemons';
 const MockedResults = () => {
   return (
     <Provider store={store}>
-      <Results pokemonId={'1'} searchData={mockedColorSearch} />
+      <Results pokemonId={'1'} searchData={mockedColorSearch} error={false} />
     </Provider>
   );
 };

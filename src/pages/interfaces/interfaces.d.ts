@@ -188,11 +188,13 @@ export interface MainProps {
 export interface SideProps {
   pokemonId: string | string[] | undefined;
   searchData: ISearchDataBasic;
+  error: boolean;
 }
 
 export interface SearchProps {
   data: ISearchDataBasic;
-  error: string | undefined;
+  error: boolean;
+  lastSearch: string;
 }
 
 export interface IPageContextQuery {

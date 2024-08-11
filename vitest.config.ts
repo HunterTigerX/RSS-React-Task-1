@@ -18,6 +18,18 @@ export default defineConfig(
       environment: 'jsdom',
       setupFiles: ['./src/pages/__tests__/config/config.ts'],
       exclude: ['.next', 'node_modules'],
+      coverage: {
+        provider: 'v8',
+        exclude: [
+          'dist',
+          '.next',
+          '**/next.config.mjs',
+          '**/next-env.d.ts',
+          '**/.eslintrc.json',
+          'vite.config.ts',
+          'vitest.config.ts',
+        ],
+      },
     },
   })
 );

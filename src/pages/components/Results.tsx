@@ -7,12 +7,11 @@ import { addToCart, closeFlyout, updateCart } from '../reducers/actions/cartActi
 import { AppDispatch } from '../reducers/root/rootReduces';
 import { returnPokemonData } from './urlMethods';
 
-const Results: React.FC<SideProps> = () => {
+const Results: React.FC<SideProps> = ({ error }) => {
   const pokemonsOnPage = useSelector((state: IState) => state.searchMain.pokemonsOnPage);
   const linkClicked = useSelector((state: IState) => state.searchSide.linkClicked);
   const savedInputCheck = useSelector((state: IState) => state.searchMain.savedInput);
   const currentPage = useSelector((state: IState) => state.searchMain.currentPage);
-  const totalPokemons = useSelector((state: IState) => state.searchMain.totalPokemons);
   const savedCartIds = useSelector((state: IState) => state.searchMain.savedCartIds);
   const savedToCart = useSelector((state: IState) => state.cart.savedCartData);
 
@@ -50,7 +49,7 @@ const Results: React.FC<SideProps> = () => {
   };
 
   const setResults = () => {
-    if (totalPokemons === 0) {
+    if (error) {
       return (
         <>
           <div className="bottom-section">{`Pokemons with this color were not found`}</div>

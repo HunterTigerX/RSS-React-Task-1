@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ISearchData, IState, SearchProps } from '../interfaces/interfaces';
 import {
@@ -13,16 +13,30 @@ import {
 import { AppDispatch } from '../reducers/root/rootReduces';
 import { ThemeContext } from '../themes/themeContect';
 
-const Search: React.FC<SearchProps> = ({ data, error }) => {
+const Search: React.FC<SearchProps> = ({ data, error, lastSearch }) => {
+  const [searchedValues, setSearchedValues] = useState<string[]>([]);
   const dispatch = useDispatch<AppDispatch>();
-  const currentInput = useSelector((state: IState) => state.searchMain.currentInput);
+  const currentInputX = useSelector((state: IState) => state.searchMain.currentInput);
+  const [inputChanged, setInputChanged] = useState(false);
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
-
-  const color = data.name;
+  const [lastInput, setLastInput] = useState('');
+  const [lastData, setLastData] = useState({});
+  const [isLoading, setisLoading] = useState(false);
 
   useEffect(() => {
-    if (data) {
+    setLastInput(lastSearch);
+  }, []);
+
+  useEffect(() => {
+    if (data !== lastData) {
+      setLastData(data);
+      setisLoading(false);
+    }
+  }, [data, lastData]);
+
+  useEffect(() => {
+    if (data && !error) {
       dispatch(searchMain(data as ISearchData));
       dispatch(savePokemonsList());
     }
@@ -33,12 +47,23 @@ const Search: React.FC<SearchProps> = ({ data, error }) => {
     }
   }, [data, dispatch]);
 
+  const currentInput = currentInputX === '' && inputChanged !== true ? lastInput : currentInputX;
+
   const updatecurrentInput = (input: string) => {
+    setInputChanged(true);
     dispatch(updateInput(input));
   };
 
   const handleSearch = () => {
-    const checkedInput = currentInput === '' ? '1' : currentInput;
+    const stringedInput = String(currentInput);
+    if (String(lastSearch) !== stringedInput) {
+      if (!searchedValues.includes(stringedInput)) {
+        const newArray = searchedValues.concat([stringedInput]);
+        setSearchedValues(newArray);
+        setisLoading(true);
+      }
+    }
+    const checkedInput = currentInput === '' ? 'black' : currentInput;
     router.push(`/page/1?${checkedInput}`);
     dispatch(goToPageOne());
     dispatch(saveInput(checkedInput));
@@ -46,13 +71,14 @@ const Search: React.FC<SearchProps> = ({ data, error }) => {
 
   return (
     <div>
+      {isLoading && <div id="loading"></div>}
       <div className="top-section">
         <button className={`button_${theme} search_button`} onClick={handleSearch}>
           Search
         </button>
         <input
           type="text"
-          value={currentInput === '' ? color : currentInput}
+          value={currentInput}
           onChange={(e) => {
             updatecurrentInput(e.target.value);
           }}

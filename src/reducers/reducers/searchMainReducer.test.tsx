@@ -21,6 +21,7 @@ const initialState = {
   currentInput: '',
   savedInput: '',
   savedSearches: [],
+  inputChanged: false,
 };
 
 describe('searchMainReducer', () => {
@@ -98,6 +99,12 @@ describe('searchMainReducer', () => {
     expect(newState.maxPages).toBe(1);
     expect(newState.colorId).toBe(null);
     expect(newState.pokemonsList).toBe(null);
+  });
+
+  it('should save current pokemons correctly', () => {
+    const action = { type: 'INPUT_CHANGED', payload: mockedColorSearch };
+    const newState = searchMainReducer(initialState, action);
+    expect(newState.pokemonsOnPage).toHaveLength(0);
   });
 
   it('should save current pokemons correctly', () => {

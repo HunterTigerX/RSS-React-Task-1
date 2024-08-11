@@ -11,6 +11,7 @@ import {
   goToPageOne,
   saveInput,
   saveSearchedValues,
+  setInputChanged,
 } from '../reducers/actions/actions';
 import { AppDispatch } from '../reducers/root/rootReduces';
 import { SearchProps, IState, ISearchData } from '@/interfaces/interfaces';
@@ -20,13 +21,12 @@ const Search: React.FC<SearchProps> = ({ data, error, lastSearch }) => {
   const dispatch = useDispatch<AppDispatch>();
   const currentInputX = useSelector((state: IState) => state.searchMain.currentInput);
   const savedSearches = useSelector((state: IState) => state.searchMain.savedSearches);
+  const inputChanged = useSelector((state: IState) => state.searchMain.inputChanged);
   const [lastInput, setLastInput] = useState('');
-  const [inputChanged, setInputChanged] = useState(false);
   const [lastData, setLastData] = useState({});
   const [isLoading, setisLoading] = useState(false);
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
-  const color = data.name;
   const currentInput = currentInputX === '' && inputChanged !== true ? lastInput : currentInputX;
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Search: React.FC<SearchProps> = ({ data, error, lastSearch }) => {
   }, [data, dispatch]);
 
   const updatecurrentInput = (input: string) => {
-    setInputChanged(true);
+    dispatch(setInputChanged());
     dispatch(updateInput(input));
   };
 
@@ -82,7 +82,7 @@ const Search: React.FC<SearchProps> = ({ data, error, lastSearch }) => {
           </button>
           <input
             type="text"
-            value={currentInput === '' ? color : currentInput}
+            value={currentInput}
             onChange={(e) => {
               updatecurrentInput(e.target.value);
             }}

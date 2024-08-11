@@ -127,6 +127,7 @@ export interface IStateMain {
   savedCartIds: string[];
   currentInput: string;
   savedSearches: string[];
+  inputChanged: boolean;
 }
 
 export interface ISearchMainResults {

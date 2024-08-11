@@ -19,6 +19,7 @@ const initialState: IStateMain = {
   currentInput: '',
   savedInput: '',
   savedSearches: [],
+  inputChanged: false,
 };
 
 const searchMainReducer = (state = initialState, action: { type: string; payload: ISearchData }) => {
@@ -73,6 +74,10 @@ const searchMainReducer = (state = initialState, action: { type: string; payload
         ...state,
         savedSearches: newArray,
       };
+    }
+
+    case 'INPUT_CHANGED': {
+      return { ...state, inputChanged: true };
     }
 
     case 'SAVE_CURRENT_POKEMONS': {

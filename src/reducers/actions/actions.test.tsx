@@ -14,6 +14,7 @@ import {
   sideLinkClicked,
   sideLinkUnClicked,
   saveSearchedValues,
+  setInputChanged,
 } from './actions';
 import { mockedColorSearch, mockedIdSearch } from '@/__mocks__/mockedPokemons';
 
@@ -121,6 +122,10 @@ it('side link was clicked', async () => {
 it('side link status changed', async () => {
   const action = sideLinkUnClicked();
   expect(action).toEqual({ type: 'SIDE_LINK_UNCLICKED' });
+});
+it('setInputChanged changed', async () => {
+  const action = setInputChanged();
+  expect(action).toEqual({ type: 'INPUT_CHANGED' });
 });
 
 it('should save last searched value', async () => {

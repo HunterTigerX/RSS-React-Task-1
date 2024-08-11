@@ -81,3 +81,9 @@ export const saveSearchedValues = (input: string) => {
     dispatch({ type: 'SAVE_SEARCHED', payload: input });
   };
 };
+
+export const setInputChanged = () => {
+  return {
+    type: 'INPUT_CHANGED',
+  };
+};

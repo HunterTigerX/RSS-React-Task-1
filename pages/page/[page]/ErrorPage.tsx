@@ -1,7 +1,7 @@
+import { ThemeContext } from '@/themes/themeContect';
+import { ThemeSwitcher } from '@/themes/themeSwitcher';
 import Link from 'next/link';
 import { useContext } from 'react';
-import { ThemeContext } from '../themes/themeContect';
-import { ThemeSwitcher } from '../themes/themeSwitcher';
 
 const ErrorPage = () => {
   const { theme } = useContext(ThemeContext);
@@ -20,4 +20,4 @@ const ErrorPage = () => {
   );
 };
 
-export { ErrorPage };
+export default ErrorPage;

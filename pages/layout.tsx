@@ -1,5 +1,5 @@
+import store from '@/reducers/root/rootReduces';
 import { Provider } from 'react-redux';
-import store from './reducers/root/rootReduces';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

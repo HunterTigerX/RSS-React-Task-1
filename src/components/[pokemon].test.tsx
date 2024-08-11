@@ -1,9 +1,7 @@
 import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import ResultsPage from './[page]';
-import { mockedColorSearch } from '../__mocks__/mockedPokemons';
-import { Provider } from 'react-redux';
-import store from '../reducers/root/rootReduces';
+import { mockedIdSearch } from '../__mocks__/mockedPokemons';
+import PokemonPage from '../../pages/page/[page]/pokemon/[pokemon]';
 
 vi.mock('next/navigation', () => ({
   usePathname: vi.fn(() => 'http://localhost:3000/page/1/pokemon/114'),
@@ -19,13 +17,9 @@ vi.mock('next/router', () => ({
   })),
 }));
 
-describe('ResultsPage', () => {
+describe('PokemonPage', () => {
   it('renders Main component with correct props', () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <ResultsPage data={mockedColorSearch} error={false} lastSearch={'color/1'} />
-      </Provider>
-    );
+    const { getByText } = render(<PokemonPage data={mockedIdSearch} oldUrl={''} />);
     expect(getByText(/Enable/i)).toBeInTheDocument();
   });
 });

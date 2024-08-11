@@ -1,5 +1,5 @@
-import { makeNameCapital } from '@/pages/components/urlMethods';
-import { ICartPayload } from '@/pages/interfaces/interfaces';
+import { makeNameCapital } from '../../components/urlMethods';
+import { ICartPayload } from '../../interfaces/interfaces';
 
 const initialState = {
   savedCartData: {},

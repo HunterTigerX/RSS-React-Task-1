@@ -1,14 +1,14 @@
-import { ThemeContext } from '@/pages/themes/themeContect';
+import Cart from '@/components/Cart';
+import ErrorButton from '@/components/ErrorButton';
+import FlyoutCart from '@/components/FlyoutCart';
+import Pagination from '@/components/Pagination';
+import Results from '@/components/Results';
+import Search from '@/components/Search';
+import { ISearchDataBasic, IPageContextQuery } from '@/interfaces/interfaces';
+import { ThemeContext } from '@/themes/themeContect';
+import { ThemeSwitcher } from '@/themes/themeSwitcher';
 import { usePathname } from 'next/navigation';
-import { IPageContextQuery, ISearchDataBasic } from '../interfaces/interfaces';
-import Cart from '../components/Cart';
-import ErrorButton from '../components/ErrorButton';
-import FlyoutCart from '../components/FlyoutCart';
-import Pagination from '../components/Pagination';
-import Results from '../components/Results';
-import Search from '../components/Search';
 import { useContext } from 'react';
-import { ThemeSwitcher } from '../themes/themeSwitcher';
 
 const ResultsPage = ({ data, error, lastSearch }: { data: ISearchDataBasic; error: boolean; lastSearch: string }) => {
   const pathname = usePathname();

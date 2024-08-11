@@ -1,4 +1,4 @@
-import { IPokemonCard } from '@/pages/interfaces/interfaces';
+import { IPokemonCard } from '../../interfaces/interfaces';
 
 const initialState = {
   linkClicked: false,

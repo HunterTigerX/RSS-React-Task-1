@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import cartReducer from './cartReducer';
-import { ICartPayload } from '@/pages/interfaces/interfaces';
+import { ICartPayload } from '../../interfaces/interfaces';
 
 const payload: ICartPayload = {
   pokemonId: '1',

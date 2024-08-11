@@ -1,7 +1,7 @@
-import PokemonCard from '@/pages/components/PokemonCard';
-import { IPokemonCardBasic } from '@/pages/interfaces/interfaces';
-import store from '@/pages/reducers/root/rootReduces';
-import { ThemeContext, ThemeProvider } from '@/pages/themes/themeContect';
+import PokemonCard from '@/components/PokemonCard';
+import { IPokemonCardBasic } from '@/interfaces/interfaces';
+import store from '@/reducers/root/rootReduces';
+import { ThemeContext, ThemeProvider } from '@/themes/themeContect';
 import { useContext } from 'react';
 import { Provider } from 'react-redux';
 

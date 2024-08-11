@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import { describe, it, vi } from 'vitest';
 import { Provider } from 'react-redux';
-import { NotFound } from './NotFound';
 import store from '../reducers/root/rootReduces';
+import NotFound from '../../pages/page/[page]/NotFound';
 
 vi.mock('react-router-dom');
 vi.mock('next/navigation', () => ({

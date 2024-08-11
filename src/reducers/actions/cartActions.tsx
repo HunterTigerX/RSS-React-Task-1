@@ -1,4 +1,4 @@
-import { IPokemonCard } from '@/pages/interfaces/interfaces';
+import { IPokemonCard } from '../../interfaces/interfaces';
 
 export const addToCart = (pokemonId: string, action: boolean, pokemonName?: string) => {
   return async (

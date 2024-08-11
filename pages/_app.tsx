@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux';
-import store from './reducers/root/rootReduces';
-import './styles/global.css';
-import { ThemeProvider } from './themes/themeContect';
+import store from '@/reducers/root/rootReduces';
+import { ThemeProvider } from '@/themes/themeContect';
+import '../src/styles/global.css';
 
 export default function MyApp({
   Component,

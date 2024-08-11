@@ -1,5 +1,5 @@
-import { returnPokemonList } from '@/pages/components/urlMethods';
-import { IStateMain, ISearchData } from '@/pages/interfaces/interfaces';
+import { returnPokemonList } from '../../components/urlMethods';
+import { IStateMain, ISearchData } from '../../interfaces/interfaces';
 
 const initialState: IStateMain = {
   pokemonData: null,

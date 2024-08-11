@@ -1,4 +1,4 @@
-import { ISearchData, IPokemonCard } from '@/pages/interfaces/interfaces';
+import { ISearchData, IPokemonCard } from '../../interfaces/interfaces';
 
 export const changePage = (newPage: number) => {
   return async (dispatch: (arg0: { type: string; payload?: number }) => void) => {

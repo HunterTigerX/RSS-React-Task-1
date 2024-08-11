@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { addToCart, updateCart } from './cartActions';
-import { mockedIdSearch } from '@/pages/__mocks__/mockedPokemons';
+import { mockedIdSearch } from '../../__mocks__/mockedPokemons';
 
 describe('should dispatch the correct actions', () => {
   it('should change page', async () => {

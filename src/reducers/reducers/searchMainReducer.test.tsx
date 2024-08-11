@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import searchMainReducer from './searchMainReducer';
-import { mockedColorSearch } from '@/pages/__mocks__/mockedPokemons';
+import { mockedColorSearch } from '../../__mocks__/mockedPokemons';
 
 const initialState = {
   pokemonData: null,

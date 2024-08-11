@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, it, vi } from 'vitest';
-import { ErrorPage } from './ErrorPage';
 import { Provider } from 'react-redux';
 import { expect } from 'chai';
 import store from '../reducers/root/rootReduces';
+import ErrorPage from '../../pages/page/[page]/ErrorPage';
 
 vi.mock('react-router-dom');
 

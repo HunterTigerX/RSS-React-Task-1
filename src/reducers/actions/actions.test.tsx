@@ -14,7 +14,7 @@ import {
   sideLinkClicked,
   sideLinkUnClicked,
 } from './actions';
-import { mockedColorSearch, mockedIdSearch } from '@/pages/__mocks__/mockedPokemons';
+import { mockedColorSearch, mockedIdSearch } from '../../__mocks__/mockedPokemons';
 
 describe('should dispatch the correct actions', () => {
   it('should change page', async () => {

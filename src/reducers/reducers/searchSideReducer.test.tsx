@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import searchSideReducer from './searchSideReducer';
-import { mockedIdSearch } from '@/pages/__mocks__/mockedPokemons';
+import { mockedIdSearch } from '../../__mocks__/mockedPokemons';
 
 describe('searchSideReducer', () => {
   const initialState = {

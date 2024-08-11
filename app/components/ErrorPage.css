@@ -1,0 +1,15 @@
+.error-container {
+  min-height: 100vh;
+}
+
+.transparent-link {
+  background-color: transparent;
+}
+
+.transparent-link.light {
+  color: white;
+}
+
+.transparent-link.dark {
+  color: black;
+}

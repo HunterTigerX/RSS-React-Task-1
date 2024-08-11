@@ -1,0 +1,9 @@
+.ulPagination {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}
+
+.boldPagination {
+  font-weight: 800;
+}

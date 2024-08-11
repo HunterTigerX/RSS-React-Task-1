@@ -1,22 +1,22 @@
-import react from '@vitejs/plugin-react';
-import path from 'node:path';
-import { defineConfig } from 'vitest/config';
-import { defineConfig as viteDefineConfig } from 'vite';
+import { vitePlugin as remix } from '@remix-run/dev';
+import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default defineConfig(
-  viteDefineConfig({
-    base: '',
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, 'src'),
+export default defineConfig({
+  plugins: [
+    remix({
+      future: {
+        v3_fetcherPersist: true,
+        v3_relativeSplatPath: true,
+        v3_throwAbortReason: true,
       },
-    },
-    plugins: [tsconfigPaths(), react()],
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: ['src/__tests__/config/config.ts'],
-    },
-  })
-);
+      routes: async (defineRoutes) => {
+        return defineRoutes((route) => {
+          route('/color/:id', 'routes/color.$number.tsx');
+          route('/color/:id/pokemon/:pokemonId', 'routes/color.$number.pokemon.$pokemonId.tsx');
+        });
+      },
+    }),
+    tsconfigPaths(),
+  ],
+});

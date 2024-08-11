@@ -1,0 +1,25 @@
+.results-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 10px;
+}
+
+.results-left {
+  width: 100%;
+}
+
+.bottom-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 20px 20px 20px;
+}
+
+.checkboxes {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+}

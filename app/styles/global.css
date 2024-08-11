@@ -1,0 +1,55 @@
+h2 {
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.toggle_button {
+  position: relative;
+  z-index: 999999;
+}
+
+.button_dark:disabled,
+.button_dark[disabled] {
+  border: 1px solid #ffebeb;
+  background-color: #ffbbbb;
+  color: #474747;
+}
+
+.dark,
+.dark > *,
+.dark * {
+  background-color: black;
+  color: white;
+}
+
+.light * button {
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+}
+
+.light > button {
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+}
+
+.light {
+  background-color: white;
+}
+
+.dark * button {
+  background-color: white;
+  color: black;
+}

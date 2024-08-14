@@ -1,0 +1,176 @@
+.hooks_form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0;
+  width: 320px;
+  border: 1px solid black;
+}
+
+.hooks_form .label-wrapper:first-child {
+  padding-top: 5px;
+}
+
+.label-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  height: 40px;
+  justify-content: center;
+  position: relative;
+}
+
+.between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.errors_message {
+  position: absolute;
+  width: 320px;
+  color: red;
+  left: 10px;
+  top: 35px;
+  margin: 0;
+  font-size: 12px;
+}
+
+.errors_message_country {
+  top: 50px;
+}
+
+.errors_message_image {
+  top: 45px;
+}
+
+.errors_message_submit {
+  top: 25px;
+}
+
+.coutry-wrapper-div {
+  height: 50px;
+}
+
+.country-wrapper {
+  border: 1px solid black;
+  width: 250px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 4px;
+}
+
+.country-input {
+  padding: 8px;
+  font-size: 16px;
+  width: 200px;
+  margin: 0;
+  z-index: 1;
+  display: inline-block;
+  border: 0;
+}
+
+.suggestion-button {
+  display: flex;
+  width: 20px;
+  height: 20px;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: 0;
+  background-color: transparent;
+}
+
+.show-suggestion-button {
+  background-image: url('../../assets/triangle-up.svg');
+}
+
+.hide-suggestion-button {
+  background-image: url('../../assets/triangle-down.svg');
+}
+
+.suggestion-button:hover {
+  cursor: pointer;
+}
+
+.countries-suggestions {
+  border: 1px solid black;
+  max-height: 180px;
+  width: 250px;
+  overflow-y: scroll;
+  margin: 4px 0 10px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: absolute;
+  z-index: 10;
+  background-color: black;
+  color: white;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+*:focus {
+  outline: none;
+}
+
+.countries-list {
+  padding-left: 10px;
+}
+
+.countries-list:hover {
+  background-color: rgb(206, 206, 206);
+}
+
+.image-label {
+  margin-top: 10px;
+  gap: 5px;
+}
+
+.image-header {
+  margin: 0;
+}
+
+.submit_form {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+  margin-top: 15px;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.hooks_submit {
+  width: 70px;
+  height: 21px;
+}
+
+.gender-wrapper-outter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.gender-wrapper-outter > * {
+  width: 50%;
+}
+
+.gender-wrapper-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.terms-wrapper {
+  justify-content: center;
+}

@@ -21,6 +21,7 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@babel/types": "^7.24.7",
+    "@hookform/resolvers": "^3.9.0",
     "@reduxjs/toolkit": "https://pkg.csb.dev/reduxjs/redux-toolkit/commit/06a30ee4/@reduxjs/toolkit",
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.10",
@@ -44,6 +45,7 @@
     "sass": "^1.77.8",
     "ts-node": "^10.9.1",
     "yup": "^1.4.0",
+    "yup-password": "^0.4.0",
     "zod": "^3.23.8",
     "zod-validation-error": "^3.3.0"
   },

@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducers';
-// import { pokemonApi } from './pokemonApi';
 
 const savedState = localStorage.getItem('state');
 const persistentState = savedState ? JSON.parse(savedState) : {};
@@ -8,7 +7,6 @@ const persistentState = savedState ? JSON.parse(savedState) : {};
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
-  // .concat(pokemonApi.middleware),
   preloadedState: persistentState,
 });
 

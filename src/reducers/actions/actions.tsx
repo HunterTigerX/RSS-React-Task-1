@@ -1,26 +1,16 @@
-export interface IData {
-  age: number;
-  confirmPassword: string;
-  country: string;
-  email: string;
-  gender: string;
-  image: string | ArrayBuffer;
-  name: string;
-  password: string;
-  termsAccepted: boolean;
-}
+import { IDataImageString } from 'reducers/reducers/interfaces';
 
-export const saveUncontrolledFormValue = (input: string) => {
-  return async (dispatch: (arg0: { type: string; payload?: string }) => void) => {
+export const saveUncontrolledFormValue = (data: IDataImageString) => {
+  return async (dispatch: (arg0: { type: string; payload: IDataImageString }) => void) => {
     dispatch({
       type: 'SAVE_UNCONTROLLED_INPUT',
-      payload: input,
+      payload: data,
     });
   };
 };
 
-export const saveHookFormValue = (data: IData) => {
-  return async (dispatch: (arg0: { type: string; payload?: IData }) => void) => {
+export const saveHookFormValue = (data: IDataImageString) => {
+  return async (dispatch: (arg0: { type: string; payload: IDataImageString }) => void) => {
     dispatch({
       type: 'SAVE_HOOK_VALUE',
       payload: data,

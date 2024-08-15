@@ -6,20 +6,12 @@ import { saveHookFormValue } from 'reducers/actions/actions';
 import { AppDispatch } from 'reducers/root/rootReduces';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import './hookForm.css';
 import { IState } from 'reducers/root/interfaces';
-
-interface FormData {
-  name: string;
-  age: number;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: string;
-  termsAccepted: boolean;
-  country: string;
-  image: File;
-}
+import { useNavigate } from 'react-router-dom';
+import { IHooksFormData } from 'reducers/reducers/interfaces';
+import './hookForm.css';
+import { generateOptions } from 'methods/methods';
+import { mockedResults } from '__mocks__/data_mock';
 
 const schema = yup.object().shape({
   name: yup
@@ -65,18 +57,8 @@ const schema = yup.object().shape({
 });
 
 const HookForm: React.FC = () => {
+  let navigate = useNavigate();
   const countries = useSelector((state: IState) => state.hooksForm.countries);
-
-  const generateOptions = () => {
-    const selectOptions = [];
-    for (let i = 0; i < countries.length; i += 1) {
-      selectOptions.push({
-        label: countries[i],
-        value: i + 1,
-      });
-    }
-    return selectOptions;
-  };
 
   const {
     register,
@@ -84,7 +66,7 @@ const HookForm: React.FC = () => {
     formState: { errors },
     setValue,
     clearErrors,
-  } = useForm<FormData>({
+  } = useForm<IHooksFormData>({
     resolver: yupResolver(schema),
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -99,18 +81,22 @@ const HookForm: React.FC = () => {
   const handleOptionClick = (option: { label: string; value: number }) => {
     setLiClicked(true);
     setDropdownVisible(false);
-    console.log('sup xx', typeof option.label, option.label);
     setValue('country', option.label);
     clearErrors('country');
   };
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: IHooksFormData) => {
     const reader = new FileReader();
     reader.onloadend = () => {
       if (reader.result) {
         dispatch(saveHookFormValue({ ...data, image: reader.result }));
+        navigate(`/`);
       }
     };
+    reader.onerror = (error) => {
+      console.error('Error reading file:', error);
+    };
+    reader.readAsDataURL(data.image);
   };
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,11 +131,22 @@ const HookForm: React.FC = () => {
     }
   };
 
+  const handleMockForm = () => {
+    dispatch(saveHookFormValue(mockedResults));
+    navigate(`/`);
+  };
+
   return (
     <>
       <li>
         <Link to="/">Main</Link>
       </li>
+      <form onSubmit={handleMockForm} className="hooks_form">
+        <button type="submit" className={'hooks_submit'}>
+          Submit
+        </button>
+      </form>
+
       <form onSubmit={handleSubmit(onSubmit)} className="hooks_form">
         <div className={'label-wrapper'}>
           <label className={'between'}>

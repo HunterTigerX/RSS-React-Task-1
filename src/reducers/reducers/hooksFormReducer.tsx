@@ -1,20 +1,25 @@
 import { countries } from '@data/countries';
+import { IHooksFormData } from './interfaces';
 
-const initialFRState = {
-  savedFormsInputs: '',
+export interface IFRState {
+  savedHooksInputs: string[];
+  countries: string[];
+}
+
+const initialFRState: IFRState = {
+  savedHooksInputs: [],
   countries: countries,
 };
 
-const hooksFormReducer = (state = initialFRState, action) => {
+const hooksFormReducer = (state = initialFRState, action: { type: string; payload: IHooksFormData }) => {
   switch (action.type) {
     case 'SAVE_HOOK_VALUE': {
-      console.log('hook action');
+      const storeDataFormat = JSON.stringify(action.payload);
       return {
         ...state,
-        savedFormsInputs: `${state.savedFormsInputs} ${action.payload}`,
+        savedHooksInputs: state.savedHooksInputs.concat([storeDataFormat]),
       };
     }
-
     default:
       return state;
   }

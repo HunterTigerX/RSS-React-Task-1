@@ -1,17 +1,19 @@
 import { countries } from '@data/countries';
+import { IHooksFormData } from './interfaces';
+import { IStateUForm } from 'reducers/root/interfaces';
 
-const initialUCState = {
-  savedUncontrolledInputs: '',
+const initialUCState: IStateUForm = {
+  savedUncontrolledInputs: [],
   countries: countries,
 };
 
-const uncontrolledFormReducer = (state = initialUCState, action: { type: string; payload: string }) => {
+const uncontrolledFormReducer = (state = initialUCState, action: { type: string; payload: IHooksFormData }) => {
   switch (action.type) {
     case 'SAVE_UNCONTROLLED_INPUT': {
-      console.log('uncontroled action');
+      const storeDataFormat = JSON.stringify(action.payload);
       return {
         ...state,
-        savedUncontrolledInputs: `${state.savedUncontrolledInputs} ${action.payload}`,
+        savedUncontrolledInputs: state.savedUncontrolledInputs.concat([storeDataFormat]),
       };
     }
 

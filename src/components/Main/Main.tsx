@@ -5,9 +5,9 @@ import { IState } from 'reducers/root/interfaces';
 
 const Main: React.FC = () => {
   const savedUncontrolledInputs = useSelector((state: IState) => state.uncontrolledForm.savedUncontrolledInputs);
-  const savedFormsInputs = useSelector((state: IState) => state.hooksForm.savedFormsInputs);
+  const savedHooksInputs = useSelector((state: IState) => state.hooksForm.savedHooksInputs);
   console.log('savedUncontrolledInputs', savedUncontrolledInputs);
-  console.log('savedFormsInputs', savedFormsInputs);
+  console.log('savedHooksInputs', savedHooksInputs);
   return (
     <div>
       <h1>Main Page</h1>

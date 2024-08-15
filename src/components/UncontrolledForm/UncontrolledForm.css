@@ -1,0 +1,107 @@
+.form-uncontrolled {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.error-wrapper {
+  font-size: small;
+  color: red;
+}
+
+.input-label-wrapper {
+  position: relative;
+}
+
+.label-wrapper {
+  position: relative;
+}
+
+.error-wrapper {
+  position: absolute;
+  top: 30px;
+  left: 10px;
+}
+
+.label-wrapper label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.repeat-password-wrapper {
+  margin-top: 7px;
+}
+
+.gender-label-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.gender-select-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sex-radio {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 55%;
+  justify-content: space-between;
+}
+
+.terms-wrapper {
+  justify-content: flex-start !important;
+}
+
+.fake-wrapper-country {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 17px;
+  padding: 1px 2px;
+  margin: 2px;
+  width: 250px;
+}
+
+.country-input-uncontrolled {
+  padding-left: 5px;
+  border: 0;
+  width: 90%;
+}
+
+.label-wrapper-coountry-uc {
+  align-items: center;
+}
+
+.countries-suggestions-uncontrolled {
+  border: 1px solid black;
+  max-height: 180px;
+  width: 250px;
+  overflow-y: scroll;
+  margin: 4px 0 10px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: absolute;
+  z-index: 10;
+  background-color: black;
+  color: white;
+  top: 30px;
+  left: 85px;
+}
+
+.suggestion-button {
+  width: 17px;
+  height: 17px;
+}
+
+.form-submit-uc {
+  margin-top: 20px;
+}

@@ -17,3 +17,15 @@ export const saveHookFormValue = (data: IDataImageString) => {
     });
   };
 };
+
+export const hooksSaved = () => {
+  return {
+    type: 'HOOKS_ADDED',
+  };
+};
+
+export const uListSaved = () => {
+  return {
+    type: 'UC_ADDED',
+  };
+};

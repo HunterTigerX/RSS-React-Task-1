@@ -3,12 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'reducers/root/rootReduces';
-import { saveHookFormValue, saveUncontrolledFormValue } from 'reducers/actions/actions';
-import { generateOptions } from 'methods/methods';
+import { saveUncontrolledFormValue, uListSaved } from 'reducers/actions/actions';
+import { generateOptions, validatePasswordStrength } from 'methods/methods';
 import { countries } from '@data/countries';
 import './UncontrolledForm.css';
 import { IHooksFormData } from 'reducers/reducers/interfaces';
 import { mockedResults } from '__mocks__/data_mock';
+import { IPassData } from 'reducers/root/interfaces';
 
 interface ValidationError {
   path: string;
@@ -28,11 +29,7 @@ const schema = yup.object().shape({
   email: yup.string().required('Email is required').email('Invalid email format'),
   password: yup
     .string()
-    .required('Password is required')
-    .matches(
-      /^(?=.*?[A-ZА-Я])(?=.*?[a-zА-Я])(?=.*?[0-9])(?=.*?[\W_]).{4,}$/,
-      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
-    ),
+    .required('Password is required'),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password'), ''], 'Password Fields must match')
@@ -71,7 +68,15 @@ const UncontrolledForm: React.FC = () => {
   const [countryInput, saveCountryInput] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [gender, setGender] = useState('');
-
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [passData, setPassData] = useState<IPassData>({
+    strength: 0,
+    number: false,
+    capital: false,
+    small: false,
+    symbol: false,
+  });
+  
   let navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -97,6 +102,7 @@ const UncontrolledForm: React.FC = () => {
       reader.onloadend = () => {
         if (reader.result) {
           dispatch(saveUncontrolledFormValue({ ...verifiedData, image: reader.result }));
+          dispatch(uListSaved());
           navigate(`/`);
         }
       };
@@ -154,27 +160,31 @@ const UncontrolledForm: React.FC = () => {
   };
 
   const buttonSelectCountries = () => {
+    const filtered = generateOptions().filter((option) => option.label.toLowerCase().includes(''.toLowerCase()));
+    setFilteredOptions(filtered);
     setDropdownVisible(!isDropdownVisible);
   };
 
   const handleMockForm = () => {
-    dispatch(saveHookFormValue(mockedResults));
+    dispatch(saveUncontrolledFormValue(mockedResults));
+    dispatch(uListSaved());
     navigate(`/`);
   };
 
   return (
     <>
-      <li>
+      <div>
         <Link to="/">Main</Link>
-      </li>
-      <form onSubmit={handleMockForm} className="hooks_form">
+      </div>
+      <form onSubmit={handleMockForm} className="form-uncontrolled-mock">
+        You can submit mocked data for test purpose
         <button type="submit" className={'hooks_submit'}>
           Submit
         </button>
       </form>
       <form onSubmit={handleFormSubmit} className="form-uncontrolled">
-        <div className={'input-label-wrapper'}>
-          <div className={'label-wrapper'}>
+        <div className={'input-label-wrapper-uc'}>
+          <div className={'label-wrapper-uc'}>
             <label>
               Name:
               <input type="text" ref={nameRef} />
@@ -183,8 +193,8 @@ const UncontrolledForm: React.FC = () => {
           <div className={'error-wrapper'}>{errors.name && <div>{errors.name}</div>}</div>
         </div>
 
-        <div className={'input-label-wrapper'}>
-          <div className={'label-wrapper'}>
+        <div className={'input-label-wrapper-uc'}>
+          <div className={'label-wrapper-uc'}>
             <label>
               Age:
               <input type="number" ref={ageRef} />
@@ -193,8 +203,8 @@ const UncontrolledForm: React.FC = () => {
           <div className={'error-wrapper'}>{errors.age && <div>{errors.age}</div>}</div>
         </div>
 
-        <div className={'input-label-wrapper'}>
-          <div className={'label-wrapper'}>
+        <div className={'input-label-wrapper-uc'}>
+          <div className={'label-wrapper-uc'}>
             <label>
               Email:
               <input type="email" ref={emailRef} />
@@ -203,28 +213,58 @@ const UncontrolledForm: React.FC = () => {
           <div className={'error-wrapper'}>{errors.email && <div>{errors.email}</div>}</div>
         </div>
 
-        <div className={'input-label-wrapper'}>
-          <div className={'label-wrapper'}>
+        <div className={'input-label-wrapper-uc'}>
+          <div className={'label-wrapper-uc'}>
             <label>
               Password:
-              <input type="password" ref={password1Ref} />
+              <div className="password-strength-uc">
+              <div className={passwordStrength >= 1 ? 'background-strength-uc' : ''}></div>
+              <div className={passwordStrength >= 2 ? 'background-strength-uc' : ''}></div>
+              <div className={passwordStrength >= 3 ? 'background-strength-uc' : ''}></div>
+              <div className={`background-strength-last-uc ${passwordStrength >= 4 ? 'background-strength-uc' : ''}`}></div>
+            </div>
+              <input type="password" ref={password1Ref} onChange={(e) => {
+                const password = e.target.value;
+                const results = validatePasswordStrength(password);
+                  setPasswordStrength(results.strength);
+                  setPassData(results)
+              }
+              }/>
             </label>
           </div>
-          <div className={'error-wrapper'}>{errors.password && <div>{errors.password}</div>}</div>
+          <div className={'checkbox-password-wrapper-uc'}>
+            <div>
+              <input type="checkbox" disabled={true} checked={passData.number} value="numberCheckBox" />
+              <label htmlFor="numberCheckBox">1 number</label>
+            </div>
+            <div>
+              <input type="checkbox" disabled={true} checked={passData.capital} value="numberCheckBox" />
+              <label htmlFor="numberCheckBox">1 uppercased letter</label>
+            </div>
+            <div>
+              <input type="checkbox" disabled={true} checked={passData.small} value="numberCheckBox" />
+              <label htmlFor="numberCheckBox">1 lowercased letter</label>
+            </div>
+            <div>
+              <input type="checkbox" disabled={true} checked={passData.symbol} value="numberCheckBox" />
+              <label htmlFor="numberCheckBox">1 special character</label>
+            </div>
+          </div>
+          <div className={'error-wrapper errors-password-uc'}>{errors.password && <div>{errors.password}</div>}</div>
         </div>
 
-        <div className={'input-label-wrapper repeat-password-wrapper'}>
-          <div className={'label-wrapper'}>
+        <div className={'input-label-wrapper-uc repeat-password-wrapper'}>
+          <div className={'label-wrapper-uc'}>
             <label>
               Repeat Password:
               <input type="password" ref={password2Ref} />
             </label>
           </div>
-          <div className={'error-wrapper'}>{errors.confirmPassword && <div>{errors.confirmPassword}</div>}</div>
+          <div className={'error-wrapper error-wrapper-repeat'}>{errors.confirmPassword && <div>{errors.confirmPassword}</div>}</div>
         </div>
 
-        <div className={'input-label-wrapper gender-label-wrapper'}>
-          <div className={'label-wrapper gender-select-wrapper'}>
+        <div className={'input-label-wrapper-uc gender-label-wrapper-uc'}>
+          <div className={'label-wrapper-uc gender-select-wrapper'}>
             Gender:
             <div className="sex-radio">
               <label>
@@ -252,9 +292,9 @@ const UncontrolledForm: React.FC = () => {
           <div className={'error-wrapper'}>{errors.gender && <div>{errors.gender}</div>}</div>
         </div>
 
-        <div className={'input-label-wrapper'}>
-          <div className={'label-wrapper'}>
-            <label className="terms-wrapper">
+        <div className={'input-label-wrapper-uc'}>
+          <div className={'label-wrapper-uc'}>
+            <label className="terms-wrapper-uc">
               Accept Terms and Conditions:
               <input type="checkbox" ref={termsRef} />
             </label>
@@ -262,8 +302,8 @@ const UncontrolledForm: React.FC = () => {
           <div className={'error-wrapper'}>{errors.termsAccepted && <div>{errors.termsAccepted}</div>}</div>
         </div>
 
-        <div className={'input-label-wrapper'}>
-          <div className={'label-wrapper'}>
+        <div className={'input-label-wrapper-uc'}>
+          <div className={'label-wrapper-uc'}>
             <label className={'label-wrapper-coountry-uc'}>
               Country:
               <div className="fake-wrapper-country">
@@ -277,7 +317,7 @@ const UncontrolledForm: React.FC = () => {
                 />
                 <button
                   type="button"
-                  className={`${isDropdownVisible ? 'show-suggestion-button' : 'hide-suggestion-button'} suggestion-button`}
+                  className={`${isDropdownVisible ? 'show-suggestion-button' : 'hide-suggestion-button'} suggestion-button suggestion-button-uc`}
                   onClick={() => buttonSelectCountries()}
                 ></button>
               </div>
@@ -299,17 +339,17 @@ const UncontrolledForm: React.FC = () => {
           <div className={'error-wrapper'}>{errors.country && <div>{errors.country}</div>}</div>
         </div>
 
-        <div className={'input-label-wrapper'}>
-          <div className={'label-wrapper'}>
-            <label>
+        <div className={'input-label-wrapper-uc'}>
+          <div className={'label-wrapper-uc'}>
+            <label className={'image-label-wrapper-uc'}>
               Upload Image:
               <input type="file" accept="image/png, image/jpeg" ref={imageRef} />
             </label>
           </div>
-          <div className={'error-wrapper'}>{errors.image && <div>{errors.image}</div>}</div>
+          <div className={'error-wrapper error-wrapper-image-uc'}>{errors.image && <div>{errors.image}</div>}</div>
         </div>
 
-        <div className={'input-label-wrapper form-submit-uc'}>
+        <div className={'input-label-wrapper-uc form-submit-uc'}>
           <button type="submit">Submit</button>
         </div>
       </form>

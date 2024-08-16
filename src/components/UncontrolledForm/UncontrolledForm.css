@@ -1,37 +1,55 @@
+.form-uncontrolled-mock {
+  display: flex;
+  flex-direction: column;
+  width: 340px;
+  border: 1px solid rgb(0, 0, 0);
+  gap: 10px;
+  margin: 10px 0;
+  padding: 5px;
+}
+
 .form-uncontrolled {
   width: 350px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 15px;
+  border: 1px solid rgb(0, 0, 0);
+}
+.form-uncontrolled > div {
+  padding: 5px 5px 0 5px;
+  align-items: center;
 }
 
 .error-wrapper {
   font-size: small;
   color: red;
-}
-
-.input-label-wrapper {
-  position: relative;
-}
-
-.label-wrapper {
-  position: relative;
-}
-
-.error-wrapper {
   position: absolute;
-  top: 30px;
-  left: 10px;
+  top: 27px;
+  left: 5px;
 }
 
-.label-wrapper label {
+.input-label-wrapper-uc {
+  position: relative;
+}
+
+.label-wrapper-uc {
+  position: relative;
+}
+
+.label-wrapper-uc label {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
+.submittedImage {
+  width: 250px;
+  height: 250px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 
 .repeat-password-wrapper {
-  margin-top: 7px;
+  margin-top: 15px;
 }
 
 .gender-label-wrapper {
@@ -52,9 +70,19 @@
   align-items: center;
   width: 55%;
   justify-content: space-between;
+  gap: 10px;
 }
 
-.terms-wrapper {
+.sex-radio label input {
+  margin: auto;
+}
+
+.sex-radio label {
+  align-items: center;
+  gap: 5px;
+}
+
+.terms-wrapper-uc {
   justify-content: flex-start !important;
 }
 
@@ -97,11 +125,59 @@
   left: 85px;
 }
 
-.suggestion-button {
+.form-submit-uc {
+  margin: 5px 0 5px;
+}
+
+.image-label-wrapper-uc {
+  display: flex;
+  flex-direction: column !important;
+  gap: 5px;
+}
+
+.error-wrapper-image-uc {
+  top: 50px;
+}
+
+.suggestion-button-uc {
   width: 17px;
   height: 17px;
 }
 
-.form-submit-uc {
-  margin-top: 20px;
+.password-strength-uc {
+  width: 45px;
+  display: flex;
+  flex-direction: row;
+  height: 19px;
+}
+
+.password-strength-uc div {
+  width: 25%;
+  height: 100%;
+  border: 1px solid black;
+  border-right: none;
+}
+
+.background-strength-uc {
+  background-color: green;
+}
+
+.background-strength-last-uc {
+  border-right: 1px solid black !important;
+}
+
+.checkbox-password-wrapper-uc {
+  margin-top: 2px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.checkbox-password-wrapper-uc div {
+  min-width: 50%;
+}
+
+.errors-password-uc {
+  top: 70px;
 }

@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { saveHookFormValue } from 'reducers/actions/actions';
+import { hooksSaved, saveHookFormValue } from 'reducers/actions/actions';
 import { AppDispatch } from 'reducers/root/rootReduces';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { IState } from 'reducers/root/interfaces';
+import { IPassData, IState } from 'reducers/root/interfaces';
 import { useNavigate } from 'react-router-dom';
 import { IHooksFormData } from 'reducers/reducers/interfaces';
 import './hookForm.css';
 import { generateOptions } from 'methods/methods';
 import { mockedResults } from '__mocks__/data_mock';
+import { validatePasswordStrength } from 'methods/methods';
 
 const schema = yup.object().shape({
   name: yup
@@ -24,13 +25,11 @@ const schema = yup.object().shape({
     .typeError('Amount is required and must be a number')
     .min(0, 'Age must be greater than or equal to zero'),
   email: yup.string().required('Email is required').email('Invalid email format'),
-  password: yup
-    .string()
-    .required('Password is required')
-    .matches(
-      /^(?=.*?[A-ZА-Я])(?=.*?[a-zА-Я])(?=.*?[0-9])(?=.*?[\W_]).{4,}$/,
-      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
-    ),
+  password: yup.string().required('Password is required'),
+  // .matches(
+  //   /^(?=.*?[A-ZА-Я])(?=.*?[a-zА-Я])(?=.*?[0-9])(?=.*?[\W_]).{4,}$/,
+  //   'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+  // )
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password'), ''], 'Password Fields must match')
@@ -76,7 +75,16 @@ const HookForm: React.FC = () => {
   const [filteredOptions, setFilteredOptions] = useState(generateOptions());
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [liClicked, setLiClicked] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [passwordConfirm, setConfirmPassword] = useState(null);
   const [tabMatch, saveTabMatch] = useState('');
+  const [passData, setPassData] = useState<IPassData>({
+    strength: 0,
+    number: false,
+    capital: false,
+    small: false,
+    symbol: false,
+  });
 
   const handleOptionClick = (option: { label: string; value: number }) => {
     setLiClicked(true);
@@ -90,6 +98,7 @@ const HookForm: React.FC = () => {
     reader.onloadend = () => {
       if (reader.result) {
         dispatch(saveHookFormValue({ ...data, image: reader.result }));
+        dispatch(hooksSaved());
         navigate(`/`);
       }
     };
@@ -120,6 +129,8 @@ const HookForm: React.FC = () => {
   };
 
   const buttonSelectCountries = () => {
+    const filtered = generateOptions().filter((option) => option.label.toLowerCase().includes(''.toLowerCase()));
+    setFilteredOptions(filtered);
     setDropdownVisible(!isDropdownVisible);
   };
 
@@ -131,17 +142,20 @@ const HookForm: React.FC = () => {
     }
   };
 
+
   const handleMockForm = () => {
     dispatch(saveHookFormValue(mockedResults));
+    dispatch(hooksSaved());
     navigate(`/`);
   };
 
   return (
     <>
-      <li>
+      <div>
         <Link to="/">Main</Link>
-      </li>
-      <form onSubmit={handleMockForm} className="hooks_form">
+      </div>
+      <form onSubmit={handleMockForm} className="form-uncontrolled-mock form-hook-mock">
+        You can submit mocked data for test purpose
         <button type="submit" className={'hooks_submit'}>
           Submit
         </button>
@@ -151,7 +165,7 @@ const HookForm: React.FC = () => {
         <div className={'label-wrapper'}>
           <label className={'between'}>
             Name:
-            <input {...register('name')} />
+            <input autoComplete="off" {...register('name')} />
           </label>
           {errors.name && <p className="errors_message">{errors.name.message}</p>}
         </div>
@@ -159,7 +173,7 @@ const HookForm: React.FC = () => {
         <div className={'label-wrapper'}>
           <label className={'between'}>
             Age:
-            <input type="number" {...register('age')} />
+            <input type="number" autoComplete="off" {...register('age')} />
           </label>
           {errors.age && <p className="errors_message">{errors.age.message}</p>}
         </div>
@@ -167,23 +181,70 @@ const HookForm: React.FC = () => {
         <div className={'label-wrapper'}>
           <label className={'between'}>
             Email:
-            <input type="email" {...register('email')} />
+            <input type="email" autoComplete="off" {...register('email')} />
           </label>
-          {errors.email && <p className="errors_message">{errors.email.message}</p>}
+          {errors.email && <p className="errors_message email-errors_message">{errors.email.message}</p>}
         </div>
 
-        <div className={'label-wrapper'}>
+        <div className={'label-wrapper password-label-wrapper'}>
           <label className={'between'}>
-            Password:
-            <input type="password" {...register('password')} />
+            Password:{' '}
+            <div className="password-strength">
+              <div className={passwordStrength >= 1 ? 'background-strength' : ''}></div>
+              <div className={passwordStrength >= 2 ? 'background-strength' : ''}></div>
+              <div className={passwordStrength >= 3 ? 'background-strength' : ''}></div>
+              <div className={`background-strength-last ${passwordStrength >= 4 ? 'background-strength' : ''}`}></div>
+            </div>
+            <input
+              type="password"
+              autoComplete="off"
+              {...register('password', {
+                onChange: (e) => {
+                  const password = e.target.value;
+                  const results = validatePasswordStrength(password);
+                  setPasswordStrength(results.strength);
+                  setPassData(results)
+                  if (password === passwordConfirm) {
+                    clearErrors('confirmPassword');
+                  }
+                },
+              })}
+            />
           </label>
-          {errors.password && <p className="errors_message">{errors.password.message}</p>}
+          <div className={'checkbox-password-wrapper'}>
+            <div>
+              <input type="checkbox" disabled={true} checked={passData.number} value="numberCheckBox" />
+              <label htmlFor="numberCheckBox">1 number</label>
+            </div>
+            <div>
+              <input type="checkbox" disabled={true} checked={passData.capital} value="numberCheckBox" />
+              <label htmlFor="numberCheckBox">1 uppercased letter</label>
+            </div>
+            <div>
+              <input type="checkbox" disabled={true} checked={passData.small} value="numberCheckBox" />
+              <label htmlFor="numberCheckBox">1 lowercased letter</label>
+            </div>
+            <div>
+              <input type="checkbox" disabled={true} checked={passData.symbol} value="numberCheckBox" />
+              <label htmlFor="numberCheckBox">1 special character</label>
+            </div>
+          </div>
+
+          {errors.password && <p className="errors_message  password-errors_message">{errors.password.message}</p>}
         </div>
 
-        <div className={'label-wrapper'}>
+        <div className={'label-wrapper label-wrapper-repeat-password'}>
           <label className={'between'}>
             Repeat Password:
-            <input type="password" {...register('confirmPassword')} />
+            <input
+              type="password"
+              {...register('confirmPassword', {
+                onChange: (e) => {
+                  const password = e.target.value;
+                  setConfirmPassword(password);
+                },
+              })}
+            />
           </label>
           {errors.confirmPassword && <p className="errors_message">{errors.confirmPassword.message}</p>}
         </div>
@@ -206,7 +267,7 @@ const HookForm: React.FC = () => {
         <div className={'label-wrapper terms-wrapper'}>
           <label>
             Accept Terms and Conditions:
-            <input type="checkbox" {...register('termsAccepted')} />
+            <input type="checkbox" autoComplete="off" {...register('termsAccepted')} />
           </label>
           {errors.termsAccepted && <p className="errors_message">{errors.termsAccepted.message}</p>}
         </div>

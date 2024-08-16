@@ -98,6 +98,10 @@
   cursor: pointer;
 }
 
+.county-label {
+  align-items: center;
+}
+
 .countries-suggestions {
   border: 1px solid black;
   max-height: 180px;
@@ -158,10 +162,12 @@ input:focus {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
 }
 
-.gender-wrapper-outter > * {
-  width: 50%;
+.gender-wrapper-inner {
+  width: 177px;
+  justify-content: space-between !important;
 }
 
 .gender-wrapper-inner {
@@ -173,4 +179,57 @@ input:focus {
 
 .terms-wrapper {
   justify-content: center;
+}
+
+.form-hook-mock {
+  width: 310px !important;
+}
+
+.password-strength {
+  width: 45px;
+  display: flex;
+  flex-direction: row;
+  height: 19px;
+}
+
+.password-strength div {
+  width: 25%;
+  height: 100%;
+  border: 1px solid black;
+  border-right: none;
+}
+
+.background-strength {
+  background-color: green;
+}
+
+.background-strength-last {
+  border-right: 1px solid black !important;
+}
+
+.checkbox-password-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.checkbox-password-wrapper div {
+  min-width: 50%;
+}
+
+.label-wrapper-repeat-password {
+  margin-top: 10px;
+}
+
+.email-errors_message {
+  top: 28px;
+}
+
+.password-label-wrapper {
+  margin-top: 5px;
+}
+
+.password-errors_message {
+  top: 52px;
 }

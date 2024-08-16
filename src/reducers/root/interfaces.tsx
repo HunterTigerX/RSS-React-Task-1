@@ -1,8 +1,7 @@
-import { IHooksFormData } from 'reducers/reducers/interfaces';
-
 export interface IState {
   uncontrolledForm: IStateUForm;
   hooksForm: IStateHForm;
+  stateReducer: IStates;
 }
 
 export interface IStateUForm {
@@ -11,6 +10,19 @@ export interface IStateUForm {
 }
 
 export interface IStateHForm {
-  savedHooksInputs: IHooksFormData[];
+  savedHooksInputs: string[];
   countries: string[];
+}
+
+export interface IStates {
+  hooksLastAdded: boolean;
+  uncontrolledLastAdded: boolean;
+}
+
+export interface IPassData {
+  strength: number;
+  number: boolean;
+  capital: boolean;
+  small: boolean;
+  symbol: boolean;
 }

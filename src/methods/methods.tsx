@@ -10,3 +10,32 @@ export const generateOptions = () => {
   }
   return selectOptions;
 };
+
+export const validatePasswordStrength = (password: string) => {
+  let results = {
+    strength: 0,
+    number: false,
+    capital: false,
+    small: false,
+    symbol: false,
+  };
+
+  if (/\d/.test(password)) {
+    results.strength += 1;
+    results.number = true;
+  }
+  
+  if (/[A-ZА-Я]/.test(password)) {
+    results.strength += 1;
+    results.capital = true;
+  }
+  if (/[a-zа-я]/.test(password)) {
+    results.strength += 1;
+    results.small = true;
+  }
+  if (/\W/.test(password)) {
+    results.strength += 1;
+    results.symbol = true;
+  }
+  return results;
+};

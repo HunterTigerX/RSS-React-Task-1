@@ -1,12 +1,8 @@
 import { countries } from '@data/countries';
 import { IHooksFormData } from './interfaces';
+import { IStateHForm } from 'reducers/root/interfaces';
 
-export interface IFRState {
-  savedHooksInputs: string[];
-  countries: string[];
-}
-
-const initialFRState: IFRState = {
+const initialFRState: IStateHForm = {
   savedHooksInputs: [],
   countries: countries,
 };

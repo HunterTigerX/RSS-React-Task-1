@@ -27,9 +27,7 @@ const schema = yup.object().shape({
     .typeError('Amount is required and must be a number')
     .min(0, 'Age must be greater than or equal to zero'),
   email: yup.string().required('Email is required').email('Invalid email format'),
-  password: yup
-    .string()
-    .required('Password is required'),
+  password: yup.string().required('Password is required'),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password'), ''], 'Password Fields must match')
@@ -76,7 +74,7 @@ const UncontrolledForm: React.FC = () => {
     small: false,
     symbol: false,
   });
-  
+
   let navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -218,18 +216,23 @@ const UncontrolledForm: React.FC = () => {
             <label>
               Password:
               <div className="password-strength-uc">
-              <div className={passwordStrength >= 1 ? 'background-strength-uc' : ''}></div>
-              <div className={passwordStrength >= 2 ? 'background-strength-uc' : ''}></div>
-              <div className={passwordStrength >= 3 ? 'background-strength-uc' : ''}></div>
-              <div className={`background-strength-last-uc ${passwordStrength >= 4 ? 'background-strength-uc' : ''}`}></div>
-            </div>
-              <input type="password" ref={password1Ref} onChange={(e) => {
-                const password = e.target.value;
-                const results = validatePasswordStrength(password);
+                <div className={passwordStrength >= 1 ? 'background-strength-uc' : ''}></div>
+                <div className={passwordStrength >= 2 ? 'background-strength-uc' : ''}></div>
+                <div className={passwordStrength >= 3 ? 'background-strength-uc' : ''}></div>
+                <div
+                  className={`background-strength-last-uc ${passwordStrength >= 4 ? 'background-strength-uc' : ''}`}
+                ></div>
+              </div>
+              <input
+                type="password"
+                ref={password1Ref}
+                onChange={(e) => {
+                  const password = e.target.value;
+                  const results = validatePasswordStrength(password);
                   setPasswordStrength(results.strength);
-                  setPassData(results)
-              }
-              }/>
+                  setPassData(results);
+                }}
+              />
             </label>
           </div>
           <div className={'checkbox-password-wrapper-uc'}>
@@ -260,7 +263,9 @@ const UncontrolledForm: React.FC = () => {
               <input type="password" ref={password2Ref} />
             </label>
           </div>
-          <div className={'error-wrapper error-wrapper-repeat'}>{errors.confirmPassword && <div>{errors.confirmPassword}</div>}</div>
+          <div className={'error-wrapper error-wrapper-repeat'}>
+            {errors.confirmPassword && <div>{errors.confirmPassword}</div>}
+          </div>
         </div>
 
         <div className={'input-label-wrapper-uc gender-label-wrapper-uc'}>

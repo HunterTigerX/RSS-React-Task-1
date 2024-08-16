@@ -142,7 +142,6 @@ const HookForm: React.FC = () => {
     }
   };
 
-
   const handleMockForm = () => {
     dispatch(saveHookFormValue(mockedResults));
     dispatch(hooksSaved());
@@ -203,7 +202,7 @@ const HookForm: React.FC = () => {
                   const password = e.target.value;
                   const results = validatePasswordStrength(password);
                   setPasswordStrength(results.strength);
-                  setPassData(results)
+                  setPassData(results);
                   if (password === passwordConfirm) {
                     clearErrors('confirmPassword');
                   }

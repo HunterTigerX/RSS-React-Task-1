@@ -1,4 +1,4 @@
-import { IStates } from "reducers/root/interfaces";
+import { IStates } from 'reducers/root/interfaces';
 
 const initialState: IStates = {
   hooksLastAdded: false,

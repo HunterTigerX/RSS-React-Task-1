@@ -24,7 +24,7 @@ export const validatePasswordStrength = (password: string) => {
     results.strength += 1;
     results.number = true;
   }
-  
+
   if (/[A-ZА-Я]/.test(password)) {
     results.strength += 1;
     results.capital = true;
